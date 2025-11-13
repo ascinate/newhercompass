@@ -6,6 +6,7 @@ import HomeBanner from './components/HomeBanner';
 import Link from 'next/link';
 import MobileMenus from './components/MobileMenus';
 import SignupModal from './components/SignupModal';
+import LoginModal from './components/LogiModal';
 
 export default function Home() {
   const coreset = [
@@ -287,6 +288,7 @@ export default function Home() {
       <Footer/>
       <MobileMenus/>
       <SignupModal/>
+      <LoginModal/>
    
     </>
   )
