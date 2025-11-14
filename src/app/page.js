@@ -9,14 +9,7 @@ import SignupModal from './components/SignupModal';
 import LoginModal from './components/LogiModal';
 
 export default function Home() {
-  const coreset = [
-    { id: 1, img:'/cm-img1.png', title: 'Couple & Partner Support' , description: 'Shared dashboards, consented digests, and the Mens Academy-empathy training and micro-courses for partners.'}, 
-    { id: 2, img:'/cm-img1.png', title: 'Al Predictive Personalization' , description: 'Mood forecasting, digital twin simulations, and adaptive content based on your logs and wearables.'},  
-    { id: 3, img:'/cm-img1.png', title: 'Evidence-Based Content' , description: 'Clinician-reviewed recipes, workouts, and meditations grounded in NIH/WHO guidance and peer-reviewed research.'},
-    { id: 4, img:'/cm-img4.png', title: 'Mood & Symptom Tracking' , description: 'Log in under 60 secs - get trend charts and correlations.'}, 
-    { id: 5, img:'/cm-img5.png', title: 'Nutrition & Recipes' , description: 'Mood-friendly recipes and shopping lists that adapt to your needs.'},
-    { id: 6, img:'/cm-img6.png', title: 'Workouts & Meditation' , description: 'Adaptive workouts and guided meditations for sleep and stress.'}, 
-  ]; 
+
 
   const csteps = [
     { id: 1, subtitel: 'Step 1' , title: 'Sign Up & Invite' , description: 'Create an account and invite your partner with a consented link.'}, 
@@ -37,31 +30,9 @@ export default function Home() {
       <Navication/>
       <HomeBanner/>
       <main className="float-start w-100 main-body position-relative">
-        <section className="float-start w-100 core-sections-div01">
-           <div className="container">
-              <h2 className="main-heading"> Core Competencies </h2>
-              <p className="text-sub-paara mt-2"> Every feature reinforces our three pillars:
-                Couple & Partner Support, Al Predictive Personalization, and
-                 Evidence-Based Content. </p>
+       
 
-              <div className="row cores-div core-card-row row-cols-1 row-cols-sm-2 row-cols-lg-3 gy-4 mt-0">
-                  {coreset.map((type) => (
-                      <div className='col' key={type.id}>
-                          <div className="comon-core-cards align-items-center w-100">
-                            <h5> <Image width={21} height={44} loading="lazy" src={type.img} alt="sm015"/>  </h5>
-                            <div className="text-core-right ps-3">
-                                <h4> {type.title} </h4>
-                                <p> {type.description} </p>
-                            </div>
-                          </div>
-                      </div>
-                  ))}
-              </div>
-
-           </div>
-        </section>
-
-        <section className="float-start comunnite-section-div w-100">
+        <section className="float-start comunnite-section-div w-100 bg-white my-4">
            <div className="container">
               <div className="row gy-4 gx-lg-5">
                  <div className="col-lg-8">
@@ -97,7 +68,7 @@ export default function Home() {
            </div>
         </section>
 
-        <section className="how-its-works-sections float-start w-100">
+        <section className="how-its-works-sections float-start w-100 bg-light">
             <div className="container">
                  <h2 className="main-heading text-center"> Clarity, Connection, and Confidence — in Every Cycle. </h2>
                  <p className="text-center text-sub-paara mt-2"> A simple, science-backed flow that gets your whole household aligned. </p>
@@ -115,7 +86,7 @@ export default function Home() {
             </div>
        </section>
 
-       <section className="pricings-sections float-start w-100">
+       <section className="pricings-sections float-start w-100 bg-white">
            <div className="container">
                <h2 className="main-heading text-center"> Pricing </h2>
                <p className="text-center text-sub-paara mt-2"> Free tracking for life. Premium removes limits and unlocks partner features,

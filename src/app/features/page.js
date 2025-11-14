@@ -91,29 +91,29 @@ export default function Features() {
        </section>
 
 
-        <section className="pricing-table w-100 d-inline-block mt-0">
+        <section className="pricing-table w-100 d-none mt-0">
            <div className="container">
-               <h2 className="main-heading text-center mb-4">Compare Plans</h2>
+               <h2 className="main-heading text-center mb-4"> HerCompassAI — Features Overview </h2>
                <div className="table-responsive">
                   <table className="table table-bordered align-middle text-center">
                      <thead>
                      <tr>
                         <th className="bg-light">Feature</th>
-                        <th>
+                        <th className='cs-plans01'>
                            <div className="plan-header">
                            <h4>Free (Freemium)</h4>
                            <div className="price">$0 / month</div>
                            <small>Basic features</small>
                            </div>
                         </th>
-                        <th>
+                        <th className='cs-plans01'>
                            <div className="plan-header mid">
                            <h4>Mid (Wellness Plus)</h4>
                            <div className="price">$7.99 / month</div>
                            <small>Advanced wellness tools</small>
                            </div>
                         </th>
-                        <th>
+                        <th className='cs-plans01'>
                            <div className="plan-header premium">
                            <h4>Premium (Total Balance)</h4>
                            <div className="price">$14.99 / month</div>
@@ -178,6 +178,245 @@ export default function Features() {
                   </table>
                </div>
            </div>
+         </section>
+
+
+         <section className="pricing-table pricongs-divg015 border-0 w-100 d-inline-block mt-0">
+           <div className="container">
+               <h2 className="main-heading text-center mb-4"> HerCompassAI — Features Overview </h2>
+               <div className="table-responsive">
+                  <table className="table table-bordered feauters-divu01 align-middle text-center">
+                     <thead>
+                     <tr>
+                        <th className="bg-light">Feature</th>
+                        <th>
+                           <div className="plan-header">
+                           <h4>Free (Freemium)</h4>
+                           <div className="price">$0 / month</div>
+                           <small>Basic features</small>
+                           </div>
+                        </th>
+                        <th>
+                           <div className="plan-header mid">
+                           <h4>Mid (Wellness Plus)</h4>
+                           <div className="price">$7.99 / month</div>
+                           <small>Advanced wellness tools</small>
+                           </div>
+                        </th>
+                     </tr>
+                     </thead>
+                     <tbody>
+                     <tr><td className="feature-title">Partner Support</td>
+                        <td>
+                           <ul>
+                               <li> ✅  Partner digest (weekly summary of shared mood/symptom trends, with consent). </li>
+                               <li className='mt-2'> ✅ Access to Men’s Academy introduction: empathy mini-course (1 lesson). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Full Men’s Academy (micro-courses + progress badges). </li>
+                               <li className='mt-2'> ✅ Couple dashboards with joint challenges (“3 walks/week”). </li>
+                               <li className='mt-2'> ✅ Shared achievements and relationship insights (“Mood correlation improved 14% with partner engagement”). </li>
+                           </ul> 
+                        </td>
+                        
+                     </tr>
+
+                     <tr><td className="feature-title">Mood &Symptom Tracker</td>
+                       <td>
+                           <ul>
+                               <li> ✅  Log daily moods, symptoms, sleep, and energy. </li>
+                               <li className='mt-2'> ✅ Basic chart view (7-day trend). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Advanced analytics (monthly &phase correlation). </li>
+                               <li className='mt-2'> ✅ AI insights (“Mood improved by 15% after consistent sleep”). </li>
+                               <li className='mt-2'> ✅ Partner digest summary (with consent). </li>
+                           </ul> 
+                        </td>
+                       
+                     </tr>
+
+                     <tr><td className="feature-title">AI Meal Plans</td>
+
+                       <td>
+                           <ul>
+                               <li> ✅  One daily AI meal suggestion for symptom support. </li>
+                               <li className='mt-2'> ✅ Basic dietary tagging (energy, sleep, hot flash relief). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Full 7-day adaptive AI meal plan. </li>
+                               <li className='mt-2'> ✅ Dynamic recommendations synced with symptom logs. </li>
+                               <li className='mt-2'> ✅ Partner-shared meals (“Cook together to boost mood”). </li>
+                           </ul> 
+                        </td>
+                     </tr>
+
+                     <tr><td className="feature-title">Recipe Suggestions</td>
+                        <td>
+                           <ul>
+                               <li> ✅  3 free recipes/day with nutritional info. </li>
+                               <li className='mt-2'> ✅ Based on popular symptom tags (e.g., “for energy,” “for calm”). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Unlimited science-backed recipes. </li>
+                               <li className='mt-2'> ✅ Filters for dietary restrictions (gluten-free, plant-based, iron-rich). </li>
+                               <li className='mt-2'> ✅ AI auto-suggests recipes matching logged deficiencies. </li>
+                           </ul> 
+                        </td>
+                     </tr>
+
+                     <tr><td className="feature-title">Grocery List Generator</td>
+
+                         <td>
+                           <ul>
+                               <li> ✅ Manual grocery list builder. </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Auto-generated shopping list from weekly AI meal plan.  </li>
+                               <li className='mt-2'> ✅ Shared couple grocery sync (CPS). </li>
+                               <li className='mt-2'> ✅ Smart pantry tracking (suggests replacements). </li>
+                           </ul> 
+                        </td>   
+                        
+                     </tr>
+
+                     <tr><td className="feature-title">Exercise Library</td>
+                         <td>
+                           <ul>
+                               <li> ✅ Access to 10 foundational videos (low-impact, stretching, breathing). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Unlimited exercises personalized to logs (bone health, cardio, joint mobility).  </li>
+                               <li className='mt-2'> ✅ Couple mode (partner workouts). </li>
+                               <li className='mt-2'> ✅ AI coach feedback (“Try this for better sleep”). </li>
+                           </ul> 
+                        </td> 
+
+                     </tr>
+
+                     <tr><td className="feature-title">Meditation Library</td>
+                        <td>
+                           <ul>
+                               <li> ✅ 5 guided meditations (stress, hot flashes, sleep). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  30+ adaptive meditations powered by AI. </li>
+                               <li className='mt-2'> ✅ Couples meditations (connection, empathy). </li>
+                               <li className='mt-2'> ✅ AI suggests meditations based on current symptom state. </li>
+                           </ul> 
+                        </td> 
+                        
+                     </tr>
+
+                     <tr><td className="feature-title">AI Chatbot (Personalized Q&A)</td>
+                         <td>
+                           <ul>
+                               <li> ✅ General wellness answers (diet, sleep, exercise). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Personalized chat powered by your data. </li>
+                               <li className='mt-2'> ✅ Partner-aware mode (explains “how to support” tips). </li>
+                               <li className='mt-2'> ✅ Evidence-based sources cited in chat. </li>
+                           </ul> 
+                        </td>    
+                     </tr>
+
+                     <tr><td className="feature-title">Analytics &Progress Insights</td>
+                        <td>
+                           <ul>
+                               <li> ✅ Basic trend dashboard (mood, energy, sleep). </li>
+                           </ul> 
+                        </td>
+                        <td>
+                           <ul>
+                               <li> ✅  Full analytics suite: correlations, AI forecasts, and predictive symptom simulation. </li>
+                               <li className='mt-2'> ✅ Partner digest (“Mood trending up 10%, keep up routines!”). </li>
+                               <li className='mt-2'> ✅ Exportable reports for clinicians. </li>
+                           </ul> 
+                        </td> 
+                     </tr>
+
+                     
+
+                     <tr><td className="feature-title"></td>
+                        <td className="cross"><a href="#" className="btn btn-gets-strtad">Get Started</a></td><td><a href="#" className="btn btn-gets-strtad">Get Started</a></td></tr>
+
+                     </tbody>
+                  </table>
+               </div>
+           </div>
+         </section>
+
+         <section className='why-choose-news w-100 d-inline-block bg-light'>
+              <div className='container'>
+                 <div className='why-de-sections d-inline-block w-100'>
+                     <h3 className='main-heading'> 💡 Why Upgrade to Premium+ </h3>
+                     <p> Unlock a richer, science-backed experience designed for you and your partner. </p>
+
+                     <div className='row row-cols-1 row-cols-lg-2 gy-4 mt-2'>
+                         <div className='col'>
+                             <div className='comons-list-div015 d-inline-block w-100'>
+                                 <h4> <span> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594zM20 2v4m2-2h-4"></path><circle cx="4" cy="20" r="2"></circle></g></svg> </span>
+                                 Deeper personalization  </h4>
+                                 <p> AI forecasts adapt dynamically to your patterns. </p>
+                              </div>
+                         </div>
+                         <div className='col'>
+                           <div className='comons-list-div015 d-inline-block w-100'>
+                              <h4> <span> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676a.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"></path></svg> </span>
+                              Relationship-centered  </h4>
+                              <p> Partners engage through digests, shared goals, and empathy training. </p>
+                           </div>
+                         </div>
+                         <div className='col'>
+                              <div className='comons-list-div015 d-inline-block w-100'>
+                                 <h4> <span> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12l2 2l4-4"></path></g></svg> </span>
+                                 Professional credibility  </h4>
+                                 <p> All insights are grounded in peer-reviewed science and clinician oversight. </p>
+                              </div>
+                         </div>
+                         <div className='col'>
+                              <div className='comons-list-div015 d-inline-block w-100'>
+                                 <h4> <span> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 16c5 0 7-8 12-8a4 4 0 0 1 0 8c-5 0-7-8-12-8a4 4 0 1 0 0 8"></path></svg> </span>
+                                 Unlimited access  </h4>
+                                 <p> Recipes, meditations, and workouts evolve with your journey. </p>
+                              </div>
+                         </div>
+                         <div className='col'>
+                              <div className='comons-list-div015 d-inline-block w-100'>
+                                 <h4> <span> <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M16 3.128a4 4 0 0 1 0 7.744M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></g></svg> </span>
+                                 Couple growth </h4>
+                                 <p> Recipes, meditations, and workouts evolve with your journey. </p>
+                              </div>
+                         </div>
+                     </div>
+                     
+                     
+
+                     
+
+                     
+
+                     
+
+                 </div>
+              </div>
          </section>
 
     
