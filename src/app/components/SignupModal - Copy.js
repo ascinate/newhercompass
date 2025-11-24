@@ -70,11 +70,15 @@ function SignupModal() {
       daily_checkin_opt_in: formValues.dailyCheckinOptIn === "on",
       preferred_recommendations:
         formValues.preferredRecommendations || [],
+
+        partner_email: formValues.partner_email || null,
+        consent_to_share: formValues.consent_to_share || false,
+
     };
 
     console.log("🚀 PAYLOAD:", payload);
 
-    const res = await fetch("http://localhost:5000/api/users/register", {
+    const res = await fetch("https://hercompass.onrender.com/api/users/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -182,8 +186,6 @@ function SignupModal() {
                                 <input type="checkbox" name="healthConcerns" onChange={handleChange} value={h} /> {h}
                               </label>
                             ))}
-
-                            
                           </div>
                         </div>
 
@@ -543,6 +545,47 @@ function SignupModal() {
                               <textarea className="form-control aret-text"></textarea>
                             </div>
                           </div>
+
+                          <div className="col-lg-12 mt-4">
+                            <h5 className="tell-heading">Invite your partner (optional)</h5>
+                            <p>Share insights with someone who supports you.</p>
+                          </div>
+
+                         
+                          <div className="col-lg-6">
+                            <div className="form-group">
+                              <label className="form-label"> Partner Email </label>
+                              <input
+                                type="email"
+                                name="partner_email"
+                                className="form-control"
+                                placeholder="e.g., partner@gmail.com"
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+
+                         
+                          <div className="col-lg-12">
+                            <div className="form-group d-flex align-items-center">
+                              <input
+                                type="checkbox"
+                                name="consent_to_share"
+                                onChange={(e) =>
+                                  handleChange({
+                                    target: {
+                                      name: "consent_to_share",
+                                      value: e.target.checked,
+                                    },
+                                  })
+                                }
+                                style={{ width: "18px", height: "18px", marginRight: "10px" }}
+                              />
+                              <label className="form-label mb-0">
+                                I agree to share selected wellness insights with my partner.
+                              </label>
+                            </div>
+                          </div>
                         </div>
 
 
@@ -583,7 +626,7 @@ function SignupModal() {
                           Next
                         </button>
                       ) : (
-                        <button  className="btn ms-2 next-btnh" type="button" onClick={handleSubmit}>
+                        <button className="btn ms-2 next-btnh" type="button" onClick={handleSubmit}>
                           Finish
                         </button>
                       )}
