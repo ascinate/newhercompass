@@ -12,8 +12,8 @@ import LoginModal from '../components/LogiModal';
 export default function Dashboard() {
 
    const [mood, setMood] = useState(null);
-   const [symptom, setSymptom] = useState(null);
-   const [note, setNote] = useState("");
+   const [symptoms, setSymptom] = useState(null);
+   const [notes, setNote] = useState("");
    const [loading, setLoading] = useState(false);
    const [sleepHours, setSleepHours] = useState("");
    const [energyLevel, setEnergyLevel] = useState("");
@@ -28,8 +28,8 @@ export default function Dashboard() {
          return;
       }
 
-      if (!mood || !symptom) {
-         alert("Please select mood & symptom");
+      if (!mood || !symptoms) {
+         alert("Please select mood & symptoms");
          return;
       }
 
@@ -41,11 +41,11 @@ export default function Dashboard() {
 
             body: JSON.stringify({
                mood,
-               symptom,
-               note,
+               symptoms,
+               notes,
                userId,
-               sleepHours: sleepHours ? Number(sleepHours) : null,
-               energyLevel: energyLevel ? Number(energyLevel) : null,
+               sleep_hours: sleepHours ? Number(sleepHours) : null,
+               energy_level: energyLevel ? Number(energyLevel) : null,
             }),
          });
 
