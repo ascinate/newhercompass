@@ -3,13 +3,11 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-// Dynamically import Bubble chart to disable SSR
 const Bubble = dynamic(
   () => import('react-chartjs-2').then((mod) => mod.Bubble),
   { ssr: false }
 );
 
-// Import and register Chart.js components
 import {
   Chart as ChartJS,
   LinearScale,
@@ -21,58 +19,35 @@ import {
 
 ChartJS.register(LinearScale, PointElement, Tooltip, Legend, Title);
 
-const BubbleChart = () => {
-  const data = {
+const BubbleChart = ({ data }) => {
+  if (!data) return <p>Loading...</p>;
+  if (data.length === 0) return <p>No prediction data.</p>;
+
+  const dataset = data.map(item => ({
+    x: item.feature_vector.sleep_hours,
+    y: item.feature_vector.mood,
+    r: item.feature_vector.energy_level * 4
+  }));
+
+  const chartData = {
     datasets: [
       {
-        label: 'Group A',
-        data: [
-          { x: 10, y: 20, r: 15 },
-          { x: 25, y: 10, r: 10 },
-          { x: 15, y: 25, r: 20 },
-        ],
+        label: 'Sleep vs Mood',
+        data: dataset,
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
-      },
-      {
-        label: 'Group B',
-        data: [
-          { x: 20, y: 30, r: 10 },
-          { x: 30, y: 20, r: 15 },
-          { x: 40, y: 10, r: 25 },
-        ],
-        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-      },
+      }
     ],
   };
 
   const options = {
     responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: '',
-      },
-    },
     scales: {
-      x: {
-        beginAtZero: true,
-        title: { display: true, text: 'X Value' },
-      },
-      y: {
-        beginAtZero: true,
-        title: { display: true, text: 'Y Value' },
-      },
-    },
+      x: { title: { text: "Sleep Hours", display: true } },
+      y: { title: { text: "Mood Level", display: true } }
+    }
   };
 
-  return (
-    <div style={{ width: '80%', margin: 'auto' }}>
-      <Bubble data={data} options={options} />
-    </div>
-  );
+  return <Bubble data={chartData} options={options} />;
 };
 
 export default BubbleChart;

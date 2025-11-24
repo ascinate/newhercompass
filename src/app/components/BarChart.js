@@ -27,37 +27,27 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = () => {
-  const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+const BarChart = ({ data }) => {
+  if (!data) return <p>Loading...</p>;
+  if (data.length === 0) return <p>No symptom prediction data.</p>;
+
+  const labels = data.map(item => item.predicted_symptoms.top_symptom);
+  const values = data.map(item => item.predicted_symptoms.intensity);
+
+  const chartData = {
+    labels,
     datasets: [
       {
-        label: 'Menopause',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-      },
-      {
-        label: 'Normal',
-        data: [8, 15, 7, 10, 4, 6],
+        label: 'Symptom Frequency',
+        data: values,
         backgroundColor: 'rgba(153, 102, 255, 0.6)',
       }
     ]
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: '',
-      },
-    },
-  };
+  const options = { responsive: true };
 
-  return <Bar data={data} options={options} />;
+  return <Bar data={chartData} options={options} />;
 };
 
 export default BarChart;

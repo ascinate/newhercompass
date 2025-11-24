@@ -1,4 +1,6 @@
-import Image from 'next/image';
+"use client";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import Navication from '../components/Navication';
 import Footer from '../components/Footer';
 import SymtomBanner from '../components/SymtomBanner';
@@ -11,6 +13,20 @@ import SignupModal from '../components/SignupModal';
 import LoginModal from '../components/LogiModal';
 
 export default function Symptom() { 
+    const [predictionData, setPredictionData] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // your JWT
+
+    axios.get(`https://hercompass.onrender.com/api/ai/predictions`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      setPredictionData(res.data);
+      console.log("Predictions Loaded:", res.data);
+    })
+    .catch(err => console.error("Prediction fetch error:", err));
+  }, []);
   return (
     <>
       <Navication/>
@@ -37,7 +53,7 @@ export default function Symptom() {
                                     <div className="cart-div015">
                                         <div className="tab-content" id="myTabContent">
                                             <div className="tab-pane fade show active" id="home" role="tabpanel">
-                                                <LineChart/>
+                                                <LineChart data={predictionData?.predictions || []}/>
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +84,7 @@ export default function Symptom() {
 
                                     <div className="cart-div015">
                                         
-                                        <BarChart/>
+                                        <BarChart data={predictionData?.predictions || []}/>
                                              
                                         
                                     </div>
@@ -99,7 +115,7 @@ export default function Symptom() {
                                 <div className="card-bodys-tabs w-100 d-block">
                                     <div className="cart-div015">
                                         
-                                        <BubbleChart/>
+                                        <BubbleChart data={predictionData?.predictions || []}/>
                                              
                                     </div>
                                     <p className="mt-3 small-parast"> Visualizes mood trends over time </p>
