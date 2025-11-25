@@ -70,6 +70,9 @@ function SignupModal() {
       daily_checkin_opt_in: formValues.dailyCheckinOptIn === "on",
       preferred_recommendations:
         formValues.preferredRecommendations || [],
+
+      partner_email: formValues.partner_email || null,
+       partner_consent: formValues.partner_consent === "yes",
     };
 
     console.log("🚀 PAYLOAD:", payload);
@@ -538,6 +541,42 @@ function SignupModal() {
                               <textarea className="form-control aret-text"></textarea>
                             </div>
                           </div>
+                          <div className="col-lg-12 mt-4">
+                            <hr />
+                            <h5 className="mt-3">Invite Your Partner</h5>
+                            <p className="text-muted">
+                              Add your partner’s email if you want them to receive weekly insights and support summaries.
+                            </p>
+                          </div>
+
+                          <div className="col-lg-6">
+                            <div className="form-group">
+                              <label className="form-label">Partner Email (optional)</label>
+                              <input
+                                type="email"
+                                className="form-control"
+                                name="partner_email"
+                                placeholder="e.g., partner@example.com"
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="col-lg-12 mt-2">
+                            <div className="form-check">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                name="partner_consent"
+                                value="yes"
+                                onChange={handleChange}
+                              />
+                              <label className="form-check-label">
+                                I consent to sharing my wellbeing summary with the partner above.
+                              </label>
+                            </div>
+                          </div>
+
                         </div>
 
 
@@ -578,7 +617,7 @@ function SignupModal() {
                           Next
                         </button>
                       ) : (
-                        <button  className="btn ms-2 next-btnh" type="button" onClick={handleSubmit}>
+                        <button className="btn ms-2 next-btnh" type="button" onClick={handleSubmit}>
                           Finish
                         </button>
                       )}
