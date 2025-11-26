@@ -35,7 +35,7 @@ export default function Dashboard() {
 
       try {
          setLoading(true);
-         const response = await fetch("https://hercompass.onrender.com/api/logs/add", {
+         const response = await fetch("http://localhost:5000/api/logs/add", {
             method: "POST",
             headers: { "Content-Type": "application/json","Authorization": `Bearer ${token}` },
 

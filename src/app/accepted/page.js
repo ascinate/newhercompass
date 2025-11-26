@@ -1,15 +1,15 @@
 "use client"
-import { useState } from "react";
-import Image from 'next/image';
+import { useSearchParams } from "next/navigation";
 import Navication from '../components/Navication';
 import Footer from '../components/Footer';
-import FeatureBanner from '../components/FeatureBanner';
-import Link from 'next/link';
 import MobileMenus from '../components/MobileMenus';
 import SignupModal from '../components/SignupModal';
 import LoginModal from '../components/LogiModal';
 
 export default function Dashboard() {
+     const searchParams = useSearchParams();
+
+  const inviterName = searchParams.get("name") || "Someone";
 
    return (
       <>
@@ -28,7 +28,7 @@ export default function Dashboard() {
                                  <figure className="user-id">
                                     <figcaption> SD </figcaption>
                                  </figure>
-                                   <h3 className="card-title text-center mt-4"> <strong> Riya Danis </strong> invited you to the Reply.  </h3>
+                                   <h3 className="card-title text-center mt-4"> <strong> {inviterName}</strong> invited you to the Reply.  </h3>
                                    <p className="mt-2 text-center col-lg-7 mx-auto"> By tapping Accept,you are confirming that you reviewed and acceptedour terms Of Use and Privacy Policy. </p>
                               </div>
                            </div>
