@@ -24,7 +24,11 @@ function LoginModal() {
   if (data.success) {
     localStorage.setItem("token", data.token); 
     localStorage.setItem("userId", data.user._id);
-    window.location.href = "/dashboard";
+     if (data.user.role === "partner") {
+      window.location.href = "/partnerdashboard";
+    } else {
+      window.location.href = "/dashboard";
+    }
   } else {
     alert(data.message);
   }
