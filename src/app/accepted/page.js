@@ -60,7 +60,11 @@ export default function AcceptedPage() {
       setError(data.message || "Failed to accept invite");
       return;
     }
-     setError("");
+  if (!data.partnerShareId) {
+      setError("Partner Share ID missing from server");
+      return;
+    }
+  localStorage.setItem("partnerShareId", data.partnerShareId);
      setSuccess("🎉 Registration successful! You can login now...");
      setTimeout(() => {
     window.location.href = "/";

@@ -24,6 +24,9 @@ function LoginModal() {
   if (data.success) {
     localStorage.setItem("token", data.token); 
     localStorage.setItem("userId", data.user._id);
+      if (data.partner_share_id) {
+    localStorage.setItem("partner_share_id", data.partner_share_id);
+    }
      if (data.user.role === "partner") {
       window.location.href = "/partnerdashboard";
     } else {

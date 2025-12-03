@@ -1,8 +1,35 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
  
 function HomeBanner() {
-    const menulist = [{ id: 1, title: 'Features' , link: '/features'}, { id: 2, title: 'Community' , link: '/community'},{ id: 3, title: 'How it work' , link: '/howitwork'}, {id:4, title: 'Pricing' , link: '/pricing '} ]; 
+const [dashboard, setDashboard] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch(
+          "http://localhost:5000/api/users/dashboard/b3376f90-9dae-4969-bbea-5fd7cd97b193"
+        );
+        const json = await res.json();
+
+        // Save entire data object
+        setDashboard(json.data);
+
+      } catch (err) {
+        console.error("Dashboard load failed:", err);
+      }
+    }
+
+    load();
+  }, []);
+
+  if (!dashboard) return <p>Loading...</p>;
+
+  const { weeklySnapshot } = dashboard;
+  
     return(
      <>
       <section className="banner-div float-start w-100 position-relative">
@@ -48,28 +75,28 @@ function HomeBanner() {
                                             <div className="items-weeklydiv01 moodst  p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Mood Trend </p>
-                                                <h5 className="mt-2"> +12% <span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4.22173 18.3642L5.63574 19.7784L15.2427 10.1716L19.071 14L19.071 4.92892L9.99999 4.92893L13.8284 8.75738L4.22173 18.3642Z"></path></svg> </span> </h5>
+                                                <h5 className="mt-2"> {weeklySnapshot.moodTrend}<span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4.22173 18.3642L5.63574 19.7784L15.2427 10.1716L19.071 14L19.071 4.92892L9.99999 4.92893L13.8284 8.75738L4.22173 18.3642Z"></path></svg> </span> </h5>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="items-weeklydiv01 flash p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Hot Flash Risk </p>
-                                                <h5 className="mt-2"> Medium </h5>
+                                                <h5 className="mt-2"> {weeklySnapshot.hotFlashRisk} </h5>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="items-weeklydiv01 scroer p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Sleep Score </p>
-                                                <h5 className="mt-2"> 78 </h5>
+                                                <h5 className="mt-2"> {weeklySnapshot.sleepScore}</h5>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="items-weeklydiv01 partners p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Partner Read </p>
-                                                <h5 className="mt-2"> Shared </h5>
+                                                <h5 className="mt-2"> {weeklySnapshot.partnerReadStatus}</h5>
                                             </div>
                                         </div>
                                 </div>

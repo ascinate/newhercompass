@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState,useEffect } from "react";
 import Image from 'next/image';
 import Navication from '../components/Navication';
 import Footer from '../components/Footer';
@@ -17,22 +17,19 @@ export default function Dashboard() {
    const [energyLevel, setEnergyLevel] = useState("");
    const [digestPreview, setDigestPreview] = useState(null);
    const [digestLoading, setDigestLoading] = useState(false);
-
    const [sharedFields, setSharedFields] = useState([]);
    const [loadingShared, setLoadingShared] = useState(false);
-
-   const toggleField = (field) => {
-      setSharedFields(prev =>
-         prev.includes(field)
-            ? prev.filter(f => f !== field)
-            : [...prev, field]
-      );
-   };
 
 
    const symptomsList = ["Hot flashes", "Insomnia", "Fatigue", "Mood swings"];
 
-
+   const toggleField = (field) => {
+   if (sharedFields.includes(field)) {
+      setSharedFields(sharedFields.filter(f => f !== field));
+   } else {
+      setSharedFields([...sharedFields, field]);
+   }
+};
 
 
    const saveLog = async () => {
@@ -161,43 +158,66 @@ export default function Dashboard() {
 
 
 
-// remove: useEffect(() => { loadSharedFields(); }, []);
 
+   useEffect(() => {
+      loadSharedFields();
+   }, []);
 
-const updateShared = async () => {
-   const token = localStorage.getItem("token");
-   const partner_share_id = localStorage.getItem("partner_share_id");
+   const loadSharedFields = async () => {
+      const token = localStorage.getItem("token");
+      const partner_share_id = localStorage.getItem("partner_share_id");
 
-   if (!token || !partner_share_id) return alert("Partner not selected");
+      if (!token || !partner_share_id) return;
 
-   try {
-      setLoadingShared(true);
+      try {
+         const res = await fetch(`http://localhost:5000/api/consent/get-shared-fields/${partner_share_id}`, {
+            headers: {
+               "Authorization": `Bearer ${token}`
+            }
+         });
 
-      const res = await fetch("http://localhost:5000/api/consent/update-shared-fields", {
-         method: "PUT",
-         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-         },
-         body: JSON.stringify({
-            partner_share_id,
-            shared_fields: sharedFields
-         })
-      });
-
-      const data = await res.json();
-      if (data.success) {
-         alert("Shared fields updated!");
+         const data = await res.json();
+         if (data.success) {
+            setSharedFields(data.data.shared_fields || []);
+         }
+      } catch (err) {
+         console.error(err);
       }
+   };
 
-   } catch (err) {
-      console.error(err);
-      alert("Error updating shared fields");
-   } finally {
-      setLoadingShared(false);
-   }
-};
+   const updateShared = async () => {
+      const token = localStorage.getItem("token");
+      const partner_share_id = localStorage.getItem("partner_share_id");
 
+      if (!token || !partner_share_id) return alert("Partner not selected");
+
+      try {
+         setLoadingShared(true);
+
+         const res = await fetch("http://localhost:5000/api/consent/update-shared-fields", {
+            method: "PUT",
+            headers: {
+               "Content-Type": "application/json",
+               "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+               partner_share_id,
+               shared_fields: sharedFields
+            })
+         });
+
+         const data = await res.json();
+         if (data.success) {
+            alert("Shared fields updated!");
+         }
+
+      } catch (err) {
+         console.error(err);
+         alert("Error updating shared fields");
+      } finally {
+         setLoadingShared(false);
+      }
+   };
 
 
 
@@ -332,34 +352,31 @@ const updateShared = async () => {
                            <div className="card-body">
                               <h4 className="card-title">What information do you want to share?</h4>
 
-                              {/* Mood Trend */}
                               <label className="d-flex align-items-center mt-2">
                                  <input
                                     type="checkbox"
-                                    checked={sharedFields.includes("mood_trend")}
-                                    onChange={() => toggleField("mood_trend")}
+                                    checked={sharedFields.includes("mood_trends")}
+                                    onChange={() => toggleField("mood_trends")}
                                  />
-                                 <span className="ms-2">Mood Trend</span>
+                                 <span className="ms-2">Mood Trends</span>
                               </label>
 
-                              {/* Notes */}
                               <label className="d-flex align-items-center mt-2">
                                  <input
                                     type="checkbox"
-                                    checked={sharedFields.includes("notes")}
-                                    onChange={() => toggleField("notes")}
+                                    checked={sharedFields.includes("supportive_note")}
+                                    onChange={() => toggleField("supportive_note")}
                                  />
-                                 <span className="ms-2">Recent Notes</span>
+                                 <span className="ms-2">Supportive Note</span>
                               </label>
 
-                              {/* AI Prediction */}
                               <label className="d-flex align-items-center mt-2">
                                  <input
                                     type="checkbox"
-                                    checked={sharedFields.includes("ai_prediction")}
-                                    onChange={() => toggleField("ai_prediction")}
+                                    checked={sharedFields.includes("recommended_actions")}
+                                    onChange={() => toggleField("recommended_actions")}
                                  />
-                                 <span className="ms-2">AI Prediction Snapshot</span>
+                                 <span className="ms-2">Recommended Actions</span>
                               </label>
 
                               <button
@@ -371,7 +388,6 @@ const updateShared = async () => {
                               </button>
                            </div>
                         </div>
-
 
 
 
