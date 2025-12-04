@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import MobileMenus from '../components/MobileMenus';
 import SignupModal from '../components/SignupModal';
 import LoginModal from '../components/LogiModal';
+import axios from "axios";
 
 export default function Dashboard() {
 
@@ -20,6 +21,7 @@ export default function Dashboard() {
 
    const [sharedFields, setSharedFields] = useState([]);
    const [loadingShared, setLoadingShared] = useState(false);
+   const [insights, setInsights] = useState(null);
 
    const toggleField = (field) => {
       setSharedFields(prev =>
@@ -28,13 +30,7 @@ export default function Dashboard() {
             : [...prev, field]
       );
    };
-
-
    const symptomsList = ["Hot flashes", "Insomnia", "Fatigue", "Mood swings"];
-
-
-
-
    const saveLog = async () => {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
@@ -68,6 +64,7 @@ export default function Dashboard() {
          console.log("SAVE LOG RESPONSE:", data);
 
          alert("Log saved successfully!");
+         window.location.reload();
          setMood(null);
          setSymptom(null);
          setNote("");
@@ -83,7 +80,7 @@ export default function Dashboard() {
 
    const triggerDigestPreview = async () => {
       const token = localStorage.getItem("token");
-      const partner_share_id = localStorage.getItem("partner_share_id"); // you stored earlier
+      const partner_share_id = localStorage.getItem("partner_share_id");
 
       if (!token || !partner_share_id) {
          alert("Missing consent or token");
@@ -159,44 +156,76 @@ export default function Dashboard() {
       }
    };
 
+   const updateShared = async () => {
+      const token = localStorage.getItem("token");
+      const partner_share_id = localStorage.getItem("partner_share_id");
 
+      if (!token || !partner_share_id) return alert("Partner not selected");
 
-// remove: useEffect(() => { loadSharedFields(); }, []);
+      try {
+         setLoadingShared(true);
 
+         const res = await fetch("http://localhost:5000/api/consent/update-shared-fields", {
+            method: "PUT",
+            headers: {
+               "Content-Type": "application/json",
+               "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+               partner_share_id,
+               shared_fields: sharedFields
+            })
+         });
 
-const updateShared = async () => {
-   const token = localStorage.getItem("token");
-   const partner_share_id = localStorage.getItem("partner_share_id");
+         const data = await res.json();
+         if (data.success) {
+            alert("Shared fields updated!");
+         }
 
-   if (!token || !partner_share_id) return alert("Partner not selected");
-
-   try {
-      setLoadingShared(true);
-
-      const res = await fetch("http://localhost:5000/api/consent/update-shared-fields", {
-         method: "PUT",
-         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-         },
-         body: JSON.stringify({
-            partner_share_id,
-            shared_fields: sharedFields
-         })
-      });
-
-      const data = await res.json();
-      if (data.success) {
-         alert("Shared fields updated!");
+      } catch (err) {
+         console.error(err);
+         alert("Error updating shared fields");
+      } finally {
+         setLoadingShared(false);
       }
+   };
 
-   } catch (err) {
-      console.error(err);
-      alert("Error updating shared fields");
-   } finally {
-      setLoadingShared(false);
-   }
-};
+
+   useEffect(() => {
+      const fetchInsights = async () => {
+         const userId = localStorage.getItem("userId");
+         if (!userId) return;
+
+         try {
+            const res = await axios.get(
+               `http://localhost:5000/api/users/dashboard/${userId}/insights`
+            );
+            setInsights(res.data.insights);
+         } catch (err) {
+            console.error("Unable to load insights", err);
+         }
+      };
+
+      fetchInsights();
+   }, []);
+
+
+   useEffect(()=>{
+      const fetch = async()=>{
+         const userId = localStorage.getItem("userId");
+         if(!userId) return;
+         try{
+              const res= await axios.get(`api/insights`);
+              setInsights(res.data.insights);
+         }
+         catch(err){
+             console.error("Unable to load", err);
+         }
+      }
+      fetch();
+   },[]);
+   
+   
 
 
 
@@ -285,6 +314,52 @@ const updateShared = async () => {
                               </div>
                            </div>
                         </div>
+                        <div className="card">
+                           <div className="card-body py-0">
+                              <h4 className="card-title">AI Insights</h4>
+                              <p>Examples of personalized insights generated from logs.</p>
+                              {insights?.correlationInsight && (
+                                 <div className="founds-div mt-3">
+                                    <h4 className="card-title">Correlation found</h4>
+                                    <p>{insights.correlationInsight}</p>
+                                    <button
+                                       type="button"
+                                       className="btn btn-veiews btn-primary mt-3"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#aiInsightsModal"
+                                       onClick={() => {
+                                          const modalBody = document.getElementById("aiInsightsModalBody");
+                                          if (modalBody) modalBody.innerHTML = insights.correlationInsight;
+                                       }}
+                                    >
+                                       View Related Logs
+                                    </button>
+                                 </div>
+                              )}
+                              {insights?.predictiveInsight && (
+                                 <div className="founds-div mt-3">
+                                    <h4 className="card-title">Predictive insight</h4>
+                                    <p>{insights.predictiveInsight}</p>
+                                    <button
+                                       type="button"
+                                       className="btn btn-veiews btn-primary mt-3"
+                                       data-bs-toggle="modal"
+                                       data-bs-target="#aiInsightsModal"
+                                       onClick={() => {
+                                          const modalBody = document.getElementById("aiInsightsModalBody");
+                                          if (modalBody) modalBody.innerHTML = insights.predictiveInsight;
+                                       }}
+                                    >
+                                       Start sleep plan
+                                    </button>
+                                 </div>
+                              )}
+
+                           </div>
+                        </div>
+
+
+
 
                         <div className="card">
                            <div className="card-body py-0">
@@ -513,6 +588,41 @@ const updateShared = async () => {
                   </div>
                </div>
             </section>
+            {/* AI Insights Modal */}
+            <div
+               className="modal fade"
+               id="aiInsightsModal"
+               tabIndex="-1"
+               aria-labelledby="aiInsightsModalLabel"
+               aria-hidden="true"
+            >
+               <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content">
+                     <div className="modal-header">
+                        <h5 className="modal-title" id="aiInsightsModalLabel">Details</h5>
+                        <button
+                           type="button"
+                           className="btn-close"
+                           data-bs-dismiss="modal"
+                           aria-label="Close"
+                        ></button>
+                     </div>
+                     <div className="modal-body" id="aiInsightsModalBody">
+                        {/* Content will be inserted dynamically */}
+                     </div>
+                     <div className="modal-footer">
+                        <button
+                           type="button"
+                           className="btn btn-secondary"
+                           data-bs-dismiss="modal"
+                        >
+                           Close
+                        </button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
 
 
          </main>

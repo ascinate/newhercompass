@@ -23,7 +23,7 @@ function LoginModal() {
 
   if (data.success) {
     localStorage.setItem("token", data.token); 
-    localStorage.setItem("userId", data.user._id);
+    localStorage.setItem("userId", data.user.id);
       if (data.partner_share_id) {
     localStorage.setItem("partner_share_id", data.partner_share_id);
     }

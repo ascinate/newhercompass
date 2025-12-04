@@ -10,11 +10,18 @@ const [dashboard, setDashboard] = useState(null);
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(
-          "http://localhost:5000/api/users/dashboard/b3376f90-9dae-4969-bbea-5fd7cd97b193"
-        );
-        const json = await res.json();
+        const userId = localStorage.getItem("userId");
 
+        if (!userId) {
+          console.error("No userId found in localStorage");
+          return;
+        }
+
+        const res = await fetch(
+          `http://localhost:5000/api/users/dashboard/${userId}`
+        );
+
+        const json = await res.json();
         // Save entire data object
         setDashboard(json.data);
 
