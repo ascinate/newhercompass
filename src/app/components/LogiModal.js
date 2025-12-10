@@ -12,7 +12,7 @@ function LoginModal() {
   const email = form.email.value;
   const password = form.password.value;
 
-  const res = await fetch(`https://node-backend-1xs8.onrender.com/api/users/login`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),

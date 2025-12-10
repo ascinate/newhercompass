@@ -507,7 +507,6 @@ export default function Dashboard() {
                                     </div>
                                  </div>
                                  <div className="col-lg-4">
-
                                     <div className="bg-light p-3">
                                        <h4 className="card-title"> Couple Mode  </h4>
                                        <p> Try: Walk together 3x this week </p>
