@@ -90,6 +90,7 @@ function Navication() {
                       Logout
                     </button>
                   ) : (
+                    <>
                     <button
                       type="button"
                       data-bs-toggle="modal"
@@ -98,16 +99,18 @@ function Navication() {
                     >
                       Login
                     </button>
-                  )}
-
-                  <button
+                    <button
                     type="button"
                     data-bs-toggle="modal"
                     data-bs-target="#registernmodal"
                     className="btn signup-btn"
-                  >
+                     >
                     Get Started
                   </button>
+                  </>
+                  )}
+
+
                 </li>
               </ul>
             </div>
