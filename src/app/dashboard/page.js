@@ -46,7 +46,7 @@ export default function Dashboard() {
 
       try {
          setLoading(true);
-         const response = await fetch("https://node-backend-1xs8.onrender.com/api/logs/add", {
+         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/logs/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
 
@@ -90,7 +90,7 @@ export default function Dashboard() {
       try {
          setDigestLoading(true);
 
-         const res = await fetch("https://node-backend-1xs8.onrender.com/api/consent/trigger-digest-preview", {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/consent/trigger-digest-preview`, {
             method: "POST",
             headers: {
                "Content-Type": "application/json",
@@ -129,7 +129,7 @@ export default function Dashboard() {
       try {
          setDigestLoading(true);
 
-         const res = await fetch("https://node-backend-1xs8.onrender.com/api/consent/trigger-digest-preview", {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/consent/trigger-digest-preview`, {
             method: "POST",
             headers: {
                "Content-Type": "application/json",
@@ -165,7 +165,7 @@ export default function Dashboard() {
       try {
          setLoadingShared(true);
 
-         const res = await fetch("https://node-backend-1xs8.onrender.com/api/consent/update-shared-fields", {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/consent/update-shared-fields`, {
             method: "PUT",
             headers: {
                "Content-Type": "application/json",
@@ -198,7 +198,7 @@ export default function Dashboard() {
 
          try {
             const res = await axios.get(
-               `https://node-backend-1xs8.onrender.com/api/users/dashboard/${userId}/insights`
+               `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}/insights`
             );
             setInsights(res.data.insights);
          } catch (err) {

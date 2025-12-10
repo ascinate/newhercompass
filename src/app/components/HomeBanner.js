@@ -18,7 +18,7 @@ const [dashboard, setDashboard] = useState(null);
         }
 
         const res = await fetch(
-          `https://node-backend-1xs8.onrender.com/api/users/dashboard/${userId}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}`
         );
 
         const json = await res.json();
