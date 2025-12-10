@@ -23,7 +23,7 @@ export default function AcceptedPage() {
     const t = params.get("token");
     setToken(t);
 
-    fetch(`http://localhost:5000/api/partner/validate/${t}`)
+    fetch(`https://node-backend-1xs8.onrender.com/api/partner/validate/${t}`)
       .then((res) => res.json())
       .then((data) => {
         if (!data.valid) {
@@ -44,7 +44,7 @@ export default function AcceptedPage() {
       return;
     }
 
-    const res = await fetch("http://localhost:5000/api/partner/accept", {
+    const res = await fetch("https://node-backend-1xs8.onrender.com/api/partner/accept", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
