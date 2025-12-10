@@ -18,7 +18,7 @@ export default function Support() {
         const fetchVideos = async () => {
             try {
                 const res = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_URL}/videos/list`
+                    `https://node-backend-1xs8.onrender.com/videos/list`
                 );
                 setVideos(res.data.videos || []);
             } catch (err) {
