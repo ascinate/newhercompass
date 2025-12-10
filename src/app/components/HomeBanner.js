@@ -22,7 +22,6 @@ const [dashboard, setDashboard] = useState(null);
         );
 
         const json = await res.json();
-        // Save entire data object
         setDashboard(json.data);
 
       } catch (err) {

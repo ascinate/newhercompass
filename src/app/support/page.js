@@ -18,7 +18,7 @@ export default function Support() {
         const fetchVideos = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/videos/list`
+                    `${process.env.NEXT_PUBLIC_API_URL}/videos/list`
                 );
                 setVideos(res.data.videos || []);
             } catch (err) {
@@ -43,30 +43,20 @@ export default function Support() {
                         <h2 className="main-heading body-main-heading text-center mb-4">
                             HerCompassAI Support Videos
                         </h2>
-
-                        {/* Loading State */}
                         {loading && <p className="text-center mt-4">Loading videos...</p>}
-
-                        {/* No Videos */}
                         {!loading && videos.length === 0 && (
                             <p className="text-center mt-4">No support videos available.</p>
                         )}
 
                         <div className="row mt-4">
                             {videos.map((video) => {
-
-                                // Condition: select only ONE preview
                                 const hasUrl = !!video.video_url;
                                 const hasFile = !!video.video_file;
 
                                 return (
                                     <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={video.id}>
                                         <div className="video-card card shadow-lg border-0 rounded-4 h-100 overflow-hidden p-2">
-
-                                            {/* ==== VIDEO PREVIEW AREA ==== */}
                                             <div className="video-wrapper">
-
-                                                {/* 1️⃣ YouTube URL (always first priority) */}
                                                 {hasUrl && (
                                                     <div className="ratio ratio-16x9 mb-3 rounded-3 overflow-hidden border">
                                                         <iframe
@@ -77,8 +67,6 @@ export default function Support() {
                                                         ></iframe>
                                                     </div>
                                                 )}
-
-                                                {/* 2️⃣ MP4 File (only if no URL) */}
                                                 {!hasUrl && hasFile && (
                                                     <div className="ratio ratio-16x9 mb-2 rounded-3 overflow-hidden border">
                                                         <video controls className="w-100 h-100">
@@ -90,16 +78,12 @@ export default function Support() {
                                                     </div>
                                                 )}
                                             </div>
-
-                                            {/* ==== TEXT CONTENT ==== */}
                                             <div className="card-body pt-0">
                                                 <h5 className="card-title fw-bold">{video.title}</h5>
 
                                                 <p className="card-text text-muted mb-2">
                                                     <strong>Category:</strong> {video.category}
                                                 </p>
-
-                                                {/* LABEL: URL (only if URL exists) */}
                                                 {hasUrl && (
                                                     <p className="mb-1">
                                                         <strong>YouTube URL:</strong><br />
@@ -113,8 +97,6 @@ export default function Support() {
                                                         </a>
                                                     </p>
                                                 )}
-
-                                                {/* LABEL: File (show only if file & no URL) */}
                                                 {!hasUrl && hasFile && (
                                                     <p className="mb-0">
                                                         <strong>Video File:</strong><br />
