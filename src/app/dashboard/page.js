@@ -209,6 +209,9 @@ export default function Dashboard() {
       fetchInsights();
    }, []);
 
+   const nutrition = insights?.nutritionInsights;
+
+
    return (
       <>
          <Navication />
@@ -434,44 +437,86 @@ export default function Dashboard() {
                            <div className="card-body py-0">
                               <div className="row">
                                  <div className="col-lg-8">
-                                    <h4 className="card-title"> Nutrition & Recipes </h4>
-                                    <p className="mt-2"> Mood-based recipes and nutrition radar vs WHO/NIH targets. </p>
+                                    <h4 className="card-title">Nutrition & Recipes</h4>
+
+                                    <p className="mt-2">
+                                       {nutrition?.summary ||
+                                          "Mood-based recipes and nutrition radar aligned with WHO/NIH guidance."}
+                                    </p>
+
                                     <figure className="mt-3">
-                                       <Image loading="lazy" width={420} height={189} src="/imags-place01.jpg" alt="sm" />
+                                       <Image
+                                          loading="lazy"
+                                          width={420}
+                                          height={189}
+                                          src="/imags-place01.jpg"
+                                          alt="Nutrition"
+                                       />
                                     </figure>
-                                    <p className="mt-2"> Example: Low iron & vitamin D detected - recipes suggested below. </p>
-                                    <h4 className="card-title mt-3"> Shared Shopping List </h4>
-                                    <ul className="mt-2">
-                                       <li>
-                                          Spinach
-                                       </li>
-                                       <li>
-                                          Lentils
-                                       </li>
-                                       <li>
-                                          Chamomile tea
-                                       </li>
-                                    </ul>
+
+                                    {/* Nutrition Radar */}
+                                    {nutrition?.radar?.length > 0 && (
+                                       <p className="mt-2">
+                                          Focus nutrients detected:{" "}
+                                          <strong>{nutrition.radar.join(", ")}</strong>
+                                       </p>
+                                    )}
+
+                                    {/* Shared Shopping List */}
+                                    {nutrition?.shoppingList?.length > 0 && (
+                                       <>
+                                          <h4 className="card-title mt-3">Shared Shopping List</h4>
+                                          <ul className="mt-2">
+                                             {nutrition.shoppingList.map((item, index) => (
+                                                <li key={index}>{item}</li>
+                                             ))}
+                                          </ul>
+                                       </>
+                                    )}
                                  </div>
+
+                                 {/* RIGHT COLUMN */}
                                  <div className="col-lg-4">
-                                    <p> SCI: ACOG/NIH guidance </p>
+                                    <p>SCI: ACOG / NIH guidance</p>
+
                                     <div className="bg-light p-3 mt-2">
-                                       <h4 className="card-title"> Suggested Recipe </h4>
-                                       <h5> Shared Shopping List </h5>
-                                       <p> Good source of iron & fiber. </p>
-                                       <button type="button" className="btn btn-primary btn-daind mt-3"> Add to Shopping </button>
+                                       <h4 className="card-title">Suggested Recipe</h4>
+
+                                       {nutrition?.suggestedRecipe ? (
+                                          <>
+                                             <h5>{nutrition.suggestedRecipe.title}</h5>
+                                             <p>{nutrition.suggestedRecipe.benefit}</p>
+
+                                             <button
+                                                type="button"
+                                                className="btn btn-primary btn-daind mt-3"
+                                             >
+                                                Add to Shopping
+                                             </button>
+                                          </>
+                                       ) : (
+                                          <p className="text-muted">
+                                             No recipe suggestion available yet.
+                                          </p>
+                                       )}
                                     </div>
                                  </div>
-
-
                               </div>
 
+                              {/* Manual Add */}
                               <div className="d-flex align-items-center mt-4">
-                                 <input type="text" className="form-control mt-0" placeholder="Add item" />
-                                 <button type="button" className="btn btn-success m-0 ms-3"> Add </button>
+                                 <input
+                                    type="text"
+                                    className="form-control mt-0"
+                                    placeholder="Add item"
+                                 />
+                                 <button type="button" className="btn btn-success m-0 ms-3">
+                                    Add
+                                 </button>
                               </div>
                            </div>
                         </div>
+
                         <div className="card w-100">
                            <div className="card-body py-0">
                               <div className="row">
