@@ -211,6 +211,8 @@ export default function Dashboard() {
 
    const nutrition = insights?.nutritionInsights;
    const movement = insights?.movementInsights;
+   const mensSupport = insights?.mensSupportInsights;
+
 
 
 
@@ -536,34 +538,34 @@ export default function Dashboard() {
                               <div className="row align-items-stretch mt-3">
                                  <div className="col-lg-8">
                                     {movement?.tonight && (
-                                    <div className="bg-light p-4">
-                                       <h4 className="card-title"> Suggested for tonight </h4>
-                                       <p> {movement.tonight.title} — {movement.tonight.duration} </p>
-                                       <p className="mt-2">{movement.tonight.description}</p>
-                                       <div className="d-flex align-items-center justify-content-between mt-3">
-                                          <button type="button" className="btn btn-daind">Start {movement.tonight.type} </button>
-                                          <button type="button" className="btn no-tbn ms-3">Add to couple challenge </button>
+                                       <div className="bg-light p-4">
+                                          <h4 className="card-title"> Suggested for tonight </h4>
+                                          <p> {movement.tonight.title} — {movement.tonight.duration} </p>
+                                          <p className="mt-2">{movement.tonight.description}</p>
+                                          <div className="d-flex align-items-center justify-content-between mt-3">
+                                             <button type="button" className="btn btn-daind">Start {movement.tonight.type} </button>
+                                             <button type="button" className="btn no-tbn ms-3">Add to couple challenge </button>
+                                          </div>
                                        </div>
-                                    </div>
                                     )}
 
 
-                                     {movement?.routine && (
-                                    <div className="new-crad01 mt-4">
-                                       <h4 className="card-title">  {movement.routine.title} </h4>
-                                       <p> {movement.routine.description} </p>
-                                       <button type="button" className="btn btn-buy btn-primary mt-3"> View Routine </button>
-                                    </div>
-                                     )}
+                                    {movement?.routine && (
+                                       <div className="new-crad01 mt-4">
+                                          <h4 className="card-title">  {movement.routine.title} </h4>
+                                          <p> {movement.routine.description} </p>
+                                          <button type="button" className="btn btn-buy btn-primary mt-3"> View Routine </button>
+                                       </div>
+                                    )}
                                  </div>
                                  {movement?.coupleMode && (
-                                 <div className="col-lg-4">
-                                    <div className="bg-light p-3">
-                                       <h4 className="card-title"> Couple Mode  </h4>
-                                       <p> Try: {movement.coupleMode.challenge} </p>
-                                       <button type="button" className="btn btn-views-ch mt-3"> Start Challenge </button>
+                                    <div className="col-lg-4">
+                                       <div className="bg-light p-3">
+                                          <h4 className="card-title"> Couple Mode  </h4>
+                                          <p> Try: {movement.coupleMode.challenge} </p>
+                                          <button type="button" className="btn btn-views-ch mt-3"> Start Challenge </button>
+                                       </div>
                                     </div>
-                                 </div>
                                  )}
 
 
@@ -579,19 +581,40 @@ export default function Dashboard() {
                      </div>
 
                      <div className="col-lg-3">
-                        <div className="card w-100">
-                           <div className="card-body py-0">
-                              <h4 className="card-title"> Men's Support (Men's Academy) </h4>
-                              <p> Short interactive micro-courses to build empathy and communication skills. </p>
-                              <h5 className="mt-2 mb-3 sub-content"> Recommended: Empathy 101-5min </h5>
-                              <div className="d-flex align-items-center mt-3">
-                                 <button type="button" className="btn btn-strat btn-daind"> Start </button>
-                                 <button type="button" className="btn btn-pogress ms-2"> Share progress </button>
-                              </div>
-                              <p className="mt-3 digest01-titels"> Digest: Weekly summary shared with consent. </p>
-                           </div>
-                        </div>
+                        {mensSupport?.recommendedModule && (
+                           <div className="card w-100">
+                              <div className="card-body py-0">
+                                 <h4 className="card-title">Men's Support (Men's Academy)</h4>
+                                 <p>
+                                    Short interactive micro-courses to build empathy and communication skills.
+                                 </p>
 
+                                 <h5 className="mt-2 mb-3 sub-content">
+                                    Recommended: {mensSupport.recommendedModule.title} —{" "}
+                                    {mensSupport.recommendedModule.duration}
+                                 </h5>
+
+                                 <p className="mt-2">
+                                    {mensSupport.recommendedModule.description}
+                                 </p>
+
+                                 <div className="d-flex align-items-center mt-3">
+                                    <button className="btn btn-strat btn-daind">
+                                       Start
+                                    </button>
+                                    <button className="btn btn-pogress ms-2">
+                                       Share progress
+                                    </button>
+                                 </div>
+
+                                 {mensSupport.digestNote && (
+                                    <p className="mt-3 digest01-titels">
+                                       Digest: {mensSupport.digestNote}
+                                    </p>
+                                 )}
+                              </div>
+                           </div>
+                        )}
                         <div className="card w-100">
                            <div className="card-body py-0">
                               <ul className="cardt-listks">
