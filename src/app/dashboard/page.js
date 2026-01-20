@@ -489,13 +489,16 @@ export default function Dashboard() {
                      </div>
 
                      <div className="col-lg-3">
-                        {mensSupport?.recommendedModule && (
+                        
                            <div className="card w-100">
                               <div className="card-body py-0">
                                  <h4 className="card-title">Men's Support (Men's Academy)</h4>
+                                 
                                  <p>
                                     Short interactive micro-courses to build empathy and communication skills.
                                  </p>
+                                 {mensSupport?.recommendedModule && (
+                                    <>
 
                                  <h5 className="mt-2 mb-3 sub-content">
                                     Recommended: {mensSupport.recommendedModule.title} —{" "}
@@ -532,9 +535,11 @@ export default function Dashboard() {
                                        Digest: {mensSupport.digestNote}
                                     </p>
                                  )}
+                                 </>
+                                 )}
                               </div>
                            </div>
-                        )}
+                        
                         <div className="card mt-4">
                            <div className="card-body">
                               <h4 className="card-title">What information do you want to share?</h4>
