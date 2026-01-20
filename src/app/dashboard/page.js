@@ -210,6 +210,8 @@ export default function Dashboard() {
    }, []);
 
    const nutrition = insights?.nutritionInsights;
+   const movement = insights?.movementInsights;
+
 
 
    return (
@@ -533,31 +535,36 @@ export default function Dashboard() {
 
                               <div className="row align-items-stretch mt-3">
                                  <div className="col-lg-8">
-
+                                    {movement?.tonight && (
                                     <div className="bg-light p-4">
                                        <h4 className="card-title"> Suggested for tonight </h4>
-                                       <p> 10-min guided evening meditation for sleep. </p>
+                                       <p> {movement.tonight.title} — {movement.tonight.duration} </p>
+                                       <p className="mt-2">{movement.tonight.description}</p>
                                        <div className="d-flex align-items-center justify-content-between mt-3">
-                                          <button type="button" className="btn btn-daind">Start Meditation </button>
+                                          <button type="button" className="btn btn-daind">Start {movement.tonight.type} </button>
                                           <button type="button" className="btn no-tbn ms-3">Add to couple challenge </button>
                                        </div>
                                     </div>
+                                    )}
 
 
-
+                                     {movement?.routine && (
                                     <div className="new-crad01 mt-4">
-                                       <h4 className="card-title">  Workouts & Meditation </h4>
-                                       <p> Adaptive workouts and guided meditations based on symptoms and goals. </p>
+                                       <h4 className="card-title">  {movement.routine.title} </h4>
+                                       <p> {movement.routine.description} </p>
                                        <button type="button" className="btn btn-buy btn-primary mt-3"> View Routine </button>
                                     </div>
+                                     )}
                                  </div>
+                                 {movement?.coupleMode && (
                                  <div className="col-lg-4">
                                     <div className="bg-light p-3">
                                        <h4 className="card-title"> Couple Mode  </h4>
-                                       <p> Try: Walk together 3x this week </p>
+                                       <p> Try: {movement.coupleMode.challenge} </p>
                                        <button type="button" className="btn btn-views-ch mt-3"> Start Challenge </button>
                                     </div>
                                  </div>
+                                 )}
 
 
                               </div>
