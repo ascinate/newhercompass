@@ -361,7 +361,7 @@ export default function Dashboard() {
                                           loading="lazy"
                                           width={420}
                                           height={189}
-                                          src="/imags-place01.jpg"
+                                          src={nutrition.image_url || "/imags-place01.jpg"}
                                           alt="Nutrition"
                                        />
                                     </figure>
