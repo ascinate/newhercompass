@@ -489,61 +489,111 @@ export default function Dashboard() {
                      </div>
 
                      <div className="col-lg-3">
-                        <div className="card w-100">
-                           <div className="card-body py-0">
-                              <h4 className="card-title">Men's Support (Men's Academy)</h4>
-                              <p>
-                                 Short interactive micro-courses to build empathy and communication skills.
-                              </p>
-                              {mensSupport?.recommendedModule && (
-                                 <>
-                                    <h5 className="mt-2 mb-3 sub-content">
-                                       Recommended: {mensSupport.recommendedModule.title} —{" "}
-                                       {mensSupport.recommendedModule.duration}
-                                    </h5>
+                        {mensSupport?.recommendedModule && (
+                           <div className="card w-100">
+                              <div className="card-body py-0">
+                                 <h4 className="card-title">Men's Support (Men's Academy)</h4>
+                                 <p>
+                                    Short interactive micro-courses to build empathy and communication skills.
+                                 </p>
 
-                                    <p className="mt-2">
-                                       {mensSupport.recommendedModule.description}
+                                 <h5 className="mt-2 mb-3 sub-content">
+                                    Recommended: {mensSupport.recommendedModule.title} —{" "}
+                                    {mensSupport.recommendedModule.duration}
+                                 </h5>
+
+                                 <p className="mt-2">
+                                    {mensSupport.recommendedModule.description}
+                                 </p>
+                                 {digestPreview && (
+                                    <div
+                                       className="border p-3 mt-2"
+                                       style={{ background: "#fafafa" }}
+                                       dangerouslySetInnerHTML={{ __html: digestPreview }}
+                                    />
+                                 )}
+
+                                 <div className="d-flex align-items-center mt-3">
+
+                                    <button className="btn btn-strat btn-daind" disabled={digestLoading}
+                                       onClick={triggerDigestPreview}
+                                    >
+                                       {digestLoading ? "Loading..." : "Start"}
+                                    </button>
+                                    <button className="btn btn-pogress ms-2" disabled={digestLoading}
+                                       onClick={sendDigest}
+                                    >
+                                       {digestLoading ? "Sending..." : "Share Progress"}
+                                    </button>
+                                 </div>
+
+                                 {mensSupport.digestNote && (
+                                    <p className="mt-3 digest01-titels">
+                                       Digest: {mensSupport.digestNote}
                                     </p>
+                                 )}
+                              </div>
+                           </div>
+                        )}
+                        <div className="card mt-4">
+                           <div className="card-body">
+                              <h4 className="card-title">What information do you want to share?</h4>
 
-                                    {digestPreview && (
-                                       <div
-                                          className="border p-3 mt-2"
-                                          style={{ background: "#fafafa" }}
-                                          dangerouslySetInnerHTML={{ __html: digestPreview }}
-                                       />
-                                    )}
+                              {/* Mood Trend */}
+                              <label className="d-flex align-items-center mt-2">
+                                 <input
+                                    type="checkbox"
+                                    checked={sharedFields.includes("mood_trend")}
+                                    onChange={() => toggleField("mood_trend")}
+                                 />
+                                 <span className="ms-2">Mood Trend</span>
+                              </label>
 
-                                    <div className="d-flex align-items-center mt-3">
-                                       <button
-                                          className="btn btn-strat btn-daind"
-                                          disabled={digestLoading}
-                                          onClick={triggerDigestPreview}
-                                       >
-                                          {digestLoading ? "Loading..." : "Start"}
-                                       </button>
+                              {/* Notes */}
+                              <label className="d-flex align-items-center mt-2">
+                                 <input
+                                    type="checkbox"
+                                    checked={sharedFields.includes("notes")}
+                                    onChange={() => toggleField("notes")}
+                                 />
+                                 <span className="ms-2">Recent Notes</span>
+                              </label>
 
-                                       <button
-                                          className="btn btn-pogress ms-2"
-                                          disabled={digestLoading}
-                                          onClick={sendDigest}
-                                       >
-                                          {digestLoading ? "Sending..." : "Share Progress"}
-                                       </button>
-                                    </div>
+                              {/* AI Prediction */}
+                              <label className="d-flex align-items-center mt-2">
+                                 <input
+                                    type="checkbox"
+                                    checked={sharedFields.includes("ai_prediction")}
+                                    onChange={() => toggleField("ai_prediction")}
+                                 />
+                                 <span className="ms-2">AI Prediction Snapshot</span>
+                              </label>
 
-                                    {mensSupport.digestNote && (
-                                       <p className="mt-3 digest01-titels">
-                                          Digest: {mensSupport.digestNote}
-                                       </p>
-                                    )}
-                                 </>
-                              )}
+                              <button
+                                 className="btn btn-warning mt-3"
+                                 disabled={loadingShared}
+                                 onClick={updateShared}
+                              >
+                                 {loadingShared ? "Updating..." : "Save Shared Fields"}
+                              </button>
                            </div>
                         </div>
-
+                        <div className="card w-100">
+                           <div className="card-body py-0">
+                              <ul className="cardt-listks">
+                                 <li>
+                                    <a href="#"> FAQ </a>
+                                 </li>
+                                 <li>
+                                    <a href="#"> Privacy & Consent </a>
+                                 </li>
+                                 <li>
+                                    <a href="#"> Contact Support </a>
+                                 </li>
+                              </ul>
+                           </div>
+                        </div>
                      </div>
-
                   </div>
                   <div className="card w-100 mt-4">
                      <div className="card-body texr-card01 d-flex align-items-center justify-content-between py-0">
