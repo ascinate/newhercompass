@@ -597,13 +597,25 @@ export default function Dashboard() {
                                  <p className="mt-2">
                                     {mensSupport.recommendedModule.description}
                                  </p>
+                                 {digestPreview && (
+                                    <div
+                                       className="border p-3 mt-2"
+                                       style={{ background: "#fafafa" }}
+                                       dangerouslySetInnerHTML={{ __html: digestPreview }}
+                                    />
+                                 )}
 
                                  <div className="d-flex align-items-center mt-3">
-                                    <button className="btn btn-strat btn-daind">
-                                       Start
+
+                                    <button className="btn btn-strat btn-daind" disabled={digestLoading}
+                                       onClick={triggerDigestPreview}
+                                    >
+                                       {digestLoading ? "Loading..." : "Start"}
                                     </button>
-                                    <button className="btn btn-pogress ms-2">
-                                       Share progress
+                                    <button className="btn btn-pogress ms-2" disabled={digestLoading}
+                                       onClick={sendDigest}
+                                    >
+                                       {digestLoading ? "Sending..." : "Share Progress"}
                                     </button>
                                  </div>
 
@@ -615,6 +627,49 @@ export default function Dashboard() {
                               </div>
                            </div>
                         )}
+                        <div className="card mt-4">
+                           <div className="card-body">
+                              <h4 className="card-title">What information do you want to share?</h4>
+
+                              {/* Mood Trend */}
+                              <label className="d-flex align-items-center mt-2">
+                                 <input
+                                    type="checkbox"
+                                    checked={sharedFields.includes("mood_trend")}
+                                    onChange={() => toggleField("mood_trend")}
+                                 />
+                                 <span className="ms-2">Mood Trend</span>
+                              </label>
+
+                              {/* Notes */}
+                              <label className="d-flex align-items-center mt-2">
+                                 <input
+                                    type="checkbox"
+                                    checked={sharedFields.includes("notes")}
+                                    onChange={() => toggleField("notes")}
+                                 />
+                                 <span className="ms-2">Recent Notes</span>
+                              </label>
+
+                              {/* AI Prediction */}
+                              <label className="d-flex align-items-center mt-2">
+                                 <input
+                                    type="checkbox"
+                                    checked={sharedFields.includes("ai_prediction")}
+                                    onChange={() => toggleField("ai_prediction")}
+                                 />
+                                 <span className="ms-2">AI Prediction Snapshot</span>
+                              </label>
+
+                              <button
+                                 className="btn btn-warning mt-3"
+                                 disabled={loadingShared}
+                                 onClick={updateShared}
+                              >
+                                 {loadingShared ? "Updating..." : "Save Shared Fields"}
+                              </button>
+                           </div>
+                        </div>
                         <div className="card w-100">
                            <div className="card-body py-0">
                               <ul className="cardt-listks">
