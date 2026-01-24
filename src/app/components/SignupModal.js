@@ -45,8 +45,6 @@ function SignupModal() {
       full_name: formValues.fullname,
       email: formValues.email,
       password: formValues.password,
-      phone: formValues.phone,
-
       age: Number(formValues.age),
       menopause_phase: formValues.phase?.toLowerCase(),
 
@@ -537,12 +535,7 @@ function SignupModal() {
                               <input type="password" name="password" className="form-control" minlength="6" placeholder="e.g., *****" required onChange={handleChange} />
                             </div>
                           </div>
-                          <div className="col-lg-6">
-                            <div className="form-group">
-                              <label className="form-label"> Phone Number </label>
-                              <input type="text" className="form-control" name="phone" placeholder="e.g., + 91 1524100" required onChange={handleChange} />
-                            </div>
-                          </div>
+                          
                           <div className="col-lg-12">
                             <div className="form-group">
                               <label className="form-label"> Anything else we should know? </label>
