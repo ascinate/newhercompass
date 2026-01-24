@@ -30,7 +30,7 @@ export default function Dashboard() {
             : [...prev, field]
       );
    };
-   const symptomsList = ["Hot flashes", "Insomnia", "Fatigue", "Mood swings"];
+   const symptomsList = ["Hot flashes", "Insomnia", "Fatigue", "Mood swings", "Brain Fog"];
    const saveLog = async () => {
       const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
