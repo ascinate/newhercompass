@@ -7,8 +7,6 @@ import MobileMenus from '../components/MobileMenus';
 import SignupModal from '../components/SignupModal';
 import LoginModal from '../components/LogiModal';
 import LoadingModal from "../components/LoadingModal";
-import InsightModal from "../components/InsightModal";
-
 
 import axios from "axios";
 
@@ -66,8 +64,6 @@ export default function Dashboard() {
 
          const data = await response.json();
          console.log("SAVE LOG RESPONSE:", data);
-
-         alert("Log saved successfully!");
          window.location.reload();
          setMood(null);
          setSymptom(null);
@@ -195,29 +191,23 @@ export default function Dashboard() {
    };
 
 
-  useEffect(() => {
-  const fetchInsights = async () => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) return;
+   useEffect(() => {
+      const fetchInsights = async () => {
+         const userId = localStorage.getItem("userId");
+         if (!userId) return;
 
-    try {
-      setDigestLoading(true);
+         try {
+            const res = await axios.get(
+               `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}/insights`
+            );
+            setInsights(res.data.insights);
+         } catch (err) {
+            console.error("Unable to load insights", err);
+         }
+      };
 
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}/insights`
-      );
-
-      setInsights(res.data.insights);
-    } catch (err) {
-      console.error("Unable to load insights", err);
-    } finally {
-      setDigestLoading(false);
-    }
-  };
-
-  fetchInsights();
-}, []);
-
+      fetchInsights();
+   }, []);
 
    const nutrition = insights?.nutritionInsights;
    const movement = insights?.movementInsights;
@@ -230,7 +220,6 @@ export default function Dashboard() {
       <>
          <Navication />
          <LoadingModal show={loading} text="Saving today’s log..." />
-         <InsightModal show={digestLoading} />
          <main className="float-start w-100 main-body dashborad-pages01 position-relative">
 
             <section className="float-start w-100">
