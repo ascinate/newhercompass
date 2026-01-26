@@ -6,6 +6,8 @@ import Footer from '../components/Footer';
 import MobileMenus from '../components/MobileMenus';
 import SignupModal from '../components/SignupModal';
 import LoginModal from '../components/LogiModal';
+import LoadingModal from "../components/LoadingModal";
+
 import axios from "axios";
 
 export default function Dashboard() {
@@ -219,6 +221,7 @@ export default function Dashboard() {
    return (
       <>
          <Navication />
+         <LoadingModal show={loading} text="Saving today’s log..." />
          <main className="float-start w-100 main-body dashborad-pages01 position-relative">
 
             <section className="float-start w-100">
@@ -294,8 +297,9 @@ export default function Dashboard() {
                                     onClick={saveLog}
                                     disabled={loading}
                                  >
-                                    {loading ? "Saving..." : "Save Log"}
+                                    Save Log
                                  </button>
+
                               </div>
                            </div>
                         </div>
@@ -489,57 +493,57 @@ export default function Dashboard() {
                      </div>
 
                      <div className="col-lg-3">
-                        
-                           <div className="card w-100">
-                              <div className="card-body py-0">
-                                 <h4 className="card-title">Men's Support (Men's Academy)</h4>
-                                 
-                                 <p>
-                                    Short interactive micro-courses to build empathy and communication skills.
-                                 </p>
-                                 {mensSupport?.recommendedModule && (
-                                    <>
 
-                                 <h5 className="mt-2 mb-3 sub-content">
-                                    Recommended: {mensSupport.recommendedModule.title} —{" "}
-                                    {mensSupport.recommendedModule.duration}
-                                 </h5>
+                        <div className="card w-100">
+                           <div className="card-body py-0">
+                              <h4 className="card-title">Men's Support (Men's Academy)</h4>
 
-                                 <p className="mt-2">
-                                    {mensSupport.recommendedModule.description}
-                                 </p>
-                                 {digestPreview && (
-                                    <div
-                                       className="border p-3 mt-2"
-                                       style={{ background: "#fafafa" }}
-                                       dangerouslySetInnerHTML={{ __html: digestPreview }}
-                                    />
-                                 )}
+                              <p>
+                                 Short interactive micro-courses to build empathy and communication skills.
+                              </p>
+                              {mensSupport?.recommendedModule && (
+                                 <>
 
-                                 <div className="d-flex align-items-center mt-3">
+                                    <h5 className="mt-2 mb-3 sub-content">
+                                       Recommended: {mensSupport.recommendedModule.title} —{" "}
+                                       {mensSupport.recommendedModule.duration}
+                                    </h5>
 
-                                    <button className="btn btn-strat btn-daind" disabled={digestLoading}
-                                       onClick={triggerDigestPreview}
-                                    >
-                                       {digestLoading ? "Loading..." : "Start"}
-                                    </button>
-                                    <button className="btn btn-pogress ms-2" disabled={digestLoading}
-                                       onClick={sendDigest}
-                                    >
-                                       {digestLoading ? "Sending..." : "Share Progress"}
-                                    </button>
-                                 </div>
-
-                                 {mensSupport.digestNote && (
-                                    <p className="mt-3 digest01-titels">
-                                       Digest: {mensSupport.digestNote}
+                                    <p className="mt-2">
+                                       {mensSupport.recommendedModule.description}
                                     </p>
-                                 )}
+                                    {digestPreview && (
+                                       <div
+                                          className="border p-3 mt-2"
+                                          style={{ background: "#fafafa" }}
+                                          dangerouslySetInnerHTML={{ __html: digestPreview }}
+                                       />
+                                    )}
+
+                                    <div className="d-flex align-items-center mt-3">
+
+                                       <button className="btn btn-strat btn-daind" disabled={digestLoading}
+                                          onClick={triggerDigestPreview}
+                                       >
+                                          {digestLoading ? "Loading..." : "Start"}
+                                       </button>
+                                       <button className="btn btn-pogress ms-2" disabled={digestLoading}
+                                          onClick={sendDigest}
+                                       >
+                                          {digestLoading ? "Sending..." : "Share Progress"}
+                                       </button>
+                                    </div>
+
+                                    {mensSupport.digestNote && (
+                                       <p className="mt-3 digest01-titels">
+                                          Digest: {mensSupport.digestNote}
+                                       </p>
+                                    )}
                                  </>
-                                 )}
-                              </div>
+                              )}
                            </div>
-                        
+                        </div>
+
                         <div className="card mt-4">
                            <div className="card-body">
                               <h4 className="card-title">What information do you want to share?</h4>
