@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 
 export default function LoadingModal({ show, text }) {
-  const [count, setCount] = useState(30);
+  const [count, setCount] = useState(50);
 
   useEffect(() => {
     if (!show) return;
 
-    setCount(30); // reset every time modal opens
+    setCount(50); // reset every time modal opens
 
     const interval = setInterval(() => {
       setCount((prev) => {
