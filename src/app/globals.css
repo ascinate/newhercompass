@@ -1383,5 +1383,10 @@ div.tags-bg015 {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   max-width: 300px;
 }
+.countdown-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #6c63ff;
+}
 
 
