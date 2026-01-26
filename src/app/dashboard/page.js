@@ -7,6 +7,8 @@ import MobileMenus from '../components/MobileMenus';
 import SignupModal from '../components/SignupModal';
 import LoginModal from '../components/LogiModal';
 import LoadingModal from "../components/LoadingModal";
+import InsightModal from "../components/InsightModal";
+
 
 import axios from "axios";
 
@@ -193,23 +195,29 @@ export default function Dashboard() {
    };
 
 
-   useEffect(() => {
-      const fetchInsights = async () => {
-         const userId = localStorage.getItem("userId");
-         if (!userId) return;
+  useEffect(() => {
+  const fetchInsights = async () => {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
 
-         try {
-            const res = await axios.get(
-               `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}/insights`
-            );
-            setInsights(res.data.insights);
-         } catch (err) {
-            console.error("Unable to load insights", err);
-         }
-      };
+    try {
+      setDigestLoading(true);
 
-      fetchInsights();
-   }, []);
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}/insights`
+      );
+
+      setInsights(res.data.insights);
+    } catch (err) {
+      console.error("Unable to load insights", err);
+    } finally {
+      setDigestLoading(false);
+    }
+  };
+
+  fetchInsights();
+}, []);
+
 
    const nutrition = insights?.nutritionInsights;
    const movement = insights?.movementInsights;
@@ -222,6 +230,7 @@ export default function Dashboard() {
       <>
          <Navication />
          <LoadingModal show={loading} text="Saving today’s log..." />
+         <InsightModal show={digestLoading} />
          <main className="float-start w-100 main-body dashborad-pages01 position-relative">
 
             <section className="float-start w-100">
