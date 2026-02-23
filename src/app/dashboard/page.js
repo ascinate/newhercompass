@@ -254,7 +254,7 @@ export default function Dashboard() {
                         <div className="card">
                            <div className="card-body py-0">
                               <h4 className="card-title"> Mood & Symptom Tracking </h4>
-                              <p className="mt-2"> Log moods, symptoms, sleep quality, energy-under 60s. </p>
+                              <p className="mt-2"> Log moods, symptoms, sleep quality, energy. </p>
 
                               <div className="paginations-text mt-4">
                                  <p className="mt-0"> Mood (1-5) </p>
