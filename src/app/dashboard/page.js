@@ -34,9 +34,9 @@ export default function Dashboard() {
    };
    const symptomsList = ["Hot flashes", "Insomnia", "Fatigue", "Mood swings", "Brain Fog"];
    const saveLog = async () => {
-      const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("token");
-      if (!userId || !token) {
+
+      if (!token) {
          alert("User not logged in");
          return;
       }
@@ -48,28 +48,40 @@ export default function Dashboard() {
 
       try {
          setLoading(true);
-         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/logs/add`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
 
-            body: JSON.stringify({
-               mood,
-               userId,
-               sleep_hours: sleepHours ? Number(sleepHours) : null,
-               energy_level: energyLevel ? Number(energyLevel) : null,
-               symptoms: symptom,
-               notes: note,
-            }),
-         });
+         const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/symptom-logs`,
+            {
+               method: "POST",
+               headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+               },
+               body: JSON.stringify({
+                  mood: Number(mood),
+                  sleep_hours: sleepHours ? Number(sleepHours) : null,
+                  energy_level: energyLevel ? Number(energyLevel) : null,
+                  symptoms: Array.isArray(symptom) ? symptom : [symptom],
+                  notes: note || null
+               }),
+            }
+         );
 
          const data = await response.json();
          console.log("SAVE LOG RESPONSE:", data);
-         window.location.reload();
+
+         if (data.success) {
+            window.location.reload();
+         } else {
+            alert(data.message || "Failed to save log");
+         }
+
          setMood(null);
          setSymptom(null);
          setNote("");
          setSleepHours("");
          setEnergyLevel("");
+
       } catch (err) {
          console.error(err);
          alert("Something went wrong");
@@ -193,14 +205,26 @@ export default function Dashboard() {
 
    useEffect(() => {
       const fetchInsights = async () => {
-         const userId = localStorage.getItem("userId");
-         if (!userId) return;
+         const token = localStorage.getItem("token");
+         if (!token) return;
 
          try {
-            const res = await axios.get(
-               `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}/insights`
+            const res = await fetch(
+               `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`,
+               {
+                  headers: {
+                     "Authorization": `Bearer ${token}`,
+                     "Content-Type": "application/json"
+                  }
+               }
             );
-            setInsights(res.data.insights);
+
+            const data = await res.json();
+
+            if (data.status) {
+               setInsights(data.insights);
+            }
+
          } catch (err) {
             console.error("Unable to load insights", err);
          }
@@ -210,6 +234,7 @@ export default function Dashboard() {
    }, []);
 
    const nutrition = insights?.nutritionInsights;
+   const firstRadarImage = nutrition?.radar?.[0]?.image_url;
    const movement = insights?.movementInsights;
    const mensSupport = insights?.mensSupportInsights;
 
@@ -363,25 +388,17 @@ export default function Dashboard() {
                                           loading="lazy"
                                           width={420}
                                           height={189}
-                                          src={nutrition?.image_url || "/imags-place01.jpg"}
+                                          src={firstRadarImage  || "/imags-place01.jpg"}
                                           alt="Nutrition"
                                        />
                                     </figure>
 
-                                    {/* Nutrition Radar */}
-                                    {nutrition?.radar?.length > 0 && (
-                                       <p className="mt-2">
-                                          Focus nutrients detected:{" "}
-                                          <strong>{nutrition.radar.join(", ")}</strong>
-                                       </p>
-                                    )}
-
                                     {/* Shared Shopping List */}
-                                    {nutrition?.shoppingList?.length > 0 && (
+                                    {nutrition?.shopping_list?.length > 0 && (
                                        <>
                                           <h4 className="card-title mt-3">Shared Shopping List</h4>
                                           <ul className="mt-2">
-                                             {nutrition.shoppingList.map((item, index) => (
+                                             {nutrition.shopping_list.map((item, index) => (
                                                 <li key={index}>{item}</li>
                                              ))}
                                           </ul>
@@ -396,10 +413,10 @@ export default function Dashboard() {
                                     <div className="bg-light p-3 mt-2">
                                        <h4 className="card-title">Suggested Recipe</h4>
 
-                                       {nutrition?.suggestedRecipe ? (
+                                       {nutrition?.suggested_recipe ? (
                                           <>
-                                             <h5>{nutrition.suggestedRecipe.title}</h5>
-                                             <p>{nutrition.suggestedRecipe.benefit}</p>
+                                             <h5>{nutrition.suggested_recipe.title}</h5>
+                                             <p>{nutrition.suggested_recipe.benefit}</p>
 
                                              <button
                                                 type="button"
@@ -468,11 +485,12 @@ export default function Dashboard() {
                                        </div>
                                     )}
                                  </div>
-                                 {movement?.coupleMode && (
+                                 {movement?.couple_mode && (
                                     <div className="col-lg-4">
                                        <div className="bg-light p-3">
                                           <h4 className="card-title"> Couple Mode  </h4>
-                                          <p> Try: {movement.coupleMode.challenge} </p>
+                                          <p>Benefit: {movement.couple_mode.benefit}   </p>
+                                          <p> Try: {movement.couple_mode.challenge} </p>
                                           <button type="button" className="btn btn-views-ch mt-3"> Start Challenge </button>
                                        </div>
                                     </div>
@@ -499,16 +517,16 @@ export default function Dashboard() {
                               <p>
                                  Short interactive micro-courses to build empathy and communication skills.
                               </p>
-                              {mensSupport?.recommendedModule && (
+                              {mensSupport?.recommended_module && (
                                  <>
 
                                     <h5 className="mt-2 mb-3 sub-content">
-                                       Recommended: {mensSupport.recommendedModule.title} —{" "}
-                                       {mensSupport.recommendedModule.duration}
+                                       Recommended: {mensSupport.recommended_module.title} —{" "}
+                                       {mensSupport.recommended_module.duration}
                                     </h5>
 
                                     <p className="mt-2">
-                                       {mensSupport.recommendedModule.description}
+                                       {mensSupport.recommended_module.description}
                                     </p>
                                     {digestPreview && (
                                        <div
@@ -532,9 +550,9 @@ export default function Dashboard() {
                                        </button>
                                     </div>
 
-                                    {mensSupport.digestNote && (
+                                    {mensSupport.digest_note && (
                                        <p className="mt-3 digest01-titels">
-                                          Digest: {mensSupport.digestNote}
+                                          Digest: {mensSupport.digest_note}
                                        </p>
                                     )}
                                  </>

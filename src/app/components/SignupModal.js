@@ -40,21 +40,22 @@ function SignupModal() {
 
 
   const handleSubmit = async () => {
-
     const payload = {
       full_name: formValues.fullname,
       email: formValues.email,
       password: formValues.password,
       age: Number(formValues.age),
+      gender: "female",
+
       menopause_phase: formValues.phase?.toLowerCase(),
 
       health_concerns: formValues.healthConcerns || [],
-      medical_conditions: formValues.medicalConditions,
-      hormone_therapy_status: formValues.hormoneTherapyStatus,
+      medical_conditions: formValues.medicalConditions || "",
+      hormone_therapy_status: formValues.hormoneTherapyStatus || "",
 
       diet_preferences: formValues.diet_preferences || [],
-      allergies: formValues.allergies,
-      energy_after_meal_rating: Number(formValues.energyAfterMealRating),
+      allergies: formValues.allergies || "",
+      energy_after_meal_rating: Number(formValues.energyAfterMealRating) || 2,
 
       mood_baseline: {
         anxious: Number(formValues.moodBaseline_anxious),
@@ -67,32 +68,34 @@ function SignupModal() {
       },
 
       emotional_goals: formValues.emotionalGoals || [],
-      meditation_frequency: formValues.meditationFrequency,
+      meditation_frequency: formValues.meditationFrequency || "",
 
-      activity_level: formValues.activityLevel,
+      activity_level: formValues.activityLevel || "",
       exercise_preferences: formValues.exercisePreferences || [],
-      weekly_exercise: formValues.weeklyExercise,
-
-      daily_checkin_opt_in: formValues.dailyCheckinOptIn === "on",
-      preferred_recommendations:
-        formValues.preferredRecommendations || [],
+      weekly_exercise: formValues.weeklyExercise || "",
 
       partner_email: formValues.partner_email || null,
-       partner_consent: formValues.partner_consent === "yes",
+      partner_consent: formValues.partner_consent === "yes",
+
+      subscription_status: "trial",
+      role: "user"
     };
 
     console.log("🚀 PAYLOAD:", payload);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
 
     const data = await res.json();
     console.log("REGISTER RESPONSE:", data);
 
-    if (data.success) {
+    if (data.status) {
       setCurrentStep(7);
     } else {
       alert("Registration failed: " + data.message);

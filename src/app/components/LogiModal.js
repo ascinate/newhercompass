@@ -5,37 +5,38 @@ import Image from "next/image";
 
 function LoginModal() {
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
+  const form = e.target;
+  const email = form.email.value;
+  const password = form.password.value;
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/login`, {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
+    {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-    console.log("LOGIN RESPONSE:", data);
-
-    if (data.success) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.user.id);
-      if (data.partner_share_id) {
-        localStorage.setItem("partner_share_id", data.partner_share_id);
-      }
-      if (data.user.role === "partner") {
-        window.location.href = "/partnerdashboard";
-      } else {
-        window.location.href = "/dashboard";
-      }
-    } else {
-      alert(data.message);
     }
-  };
+  );
+
+  const data = await res.json();
+  console.log("LOGIN RESPONSE:", data);
+
+  if (data.status) {   // ✅ changed from success
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    if (data.user.role === "partner") {
+      window.location.href = "/partnerdashboard";
+    } else {
+      window.location.href = "/dashboard";
+    }
+  } else {
+    alert(data.message || "Login failed");
+  }
+};
 
   const handleForgotPassword = async () => {
     const email = prompt("Enter your registered email");

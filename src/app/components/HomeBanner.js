@@ -5,36 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
  
 function HomeBanner() {
-const [dashboard, setDashboard] = useState(null);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const userId = localStorage.getItem("userId");
-
-        if (!userId) {
-          console.error("No userId found in localStorage");
-          return;
-        }
-
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/users/dashboard/${userId}`
-        );
-
-        const json = await res.json();
-        setDashboard(json.data);
-
-      } catch (err) {
-        console.error("Dashboard load failed:", err);
-      }
-    }
-
-    load();
-  }, []);
-
-  if (!dashboard) return <p>Loading...</p>;
-
-  const { weeklySnapshot } = dashboard;
   
     return(
      <>
@@ -87,28 +58,28 @@ const [dashboard, setDashboard] = useState(null);
                                             <div className="items-weeklydiv01 moodst  p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Mood Trend </p>
-                                                <h5 className="mt-2"> {weeklySnapshot.moodTrend}<span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4.22173 18.3642L5.63574 19.7784L15.2427 10.1716L19.071 14L19.071 4.92892L9.99999 4.92893L13.8284 8.75738L4.22173 18.3642Z"></path></svg> </span> </h5>
+                                                <h5 className="mt-2"> 100<span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M4.22173 18.3642L5.63574 19.7784L15.2427 10.1716L19.071 14L19.071 4.92892L9.99999 4.92893L13.8284 8.75738L4.22173 18.3642Z"></path></svg> </span> </h5>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="items-weeklydiv01 flash p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Hot Flash Risk </p>
-                                                <h5 className="mt-2"> {weeklySnapshot.hotFlashRisk} </h5>
+                                                <h5 className="mt-2"> 6% </h5>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="items-weeklydiv01 scroer p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Sleep Score </p>
-                                                <h5 className="mt-2"> {weeklySnapshot.sleepScore}</h5>
+                                                <h5 className="mt-2"> 90%</h5>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="items-weeklydiv01 partners p-4 d-inline-block w-100">
                                                 
                                                 <p className="mt-0"> Partner Read </p>
-                                                <h5 className="mt-2"> {weeklySnapshot.partnerReadStatus}</h5>
+                                                <h5 className="mt-2"> Yes</h5>
                                             </div>
                                         </div>
                                 </div>
