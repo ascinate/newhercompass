@@ -6,7 +6,7 @@ const withPWA = require('next-pwa')({
 
 const nextConfig = {
   images: {
-    domains: ['ascinate.in', 'localhost'],
+    domains: ['ascinate.in'],
   },
 }
 
