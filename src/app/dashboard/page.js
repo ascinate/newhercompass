@@ -234,7 +234,9 @@ export default function Dashboard() {
    }, []);
 
    const nutrition = insights?.nutritionInsights;
-   const firstRadarImage = nutrition?.radar?.[0]?.image_url;
+   const firstRadarImage = nutrition?.radar?.[0]?.image_url
+  ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${nutrition.radar[0].image_url}`
+  : null;
    const movement = insights?.movementInsights;
    const mensSupport = insights?.mensSupportInsights;
 
