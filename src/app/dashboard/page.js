@@ -90,83 +90,7 @@ export default function Dashboard() {
       }
    };
 
-   const triggerDigestPreview = async () => {
-      const token = localStorage.getItem("token");
-      const partner_share_id = localStorage.getItem("partner_share_id");
 
-      if (!token || !partner_share_id) {
-         alert("Missing consent or token");
-         return;
-      }
-
-      try {
-         setDigestLoading(true);
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/consent/trigger-digest-preview`, {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-               "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               partner_share_id,
-               send: false
-            })
-         });
-
-         const data = await res.json();
-         console.log("DIGEST PREVIEW →", data);
-
-         if (data.success) {
-            setDigestPreview(data.preview.emailHtml);
-         }
-
-      } catch (e) {
-         console.error(e);
-         alert("Preview failed");
-      } finally {
-         setDigestLoading(false);
-      }
-   };
-
-   const sendDigest = async () => {
-      const token = localStorage.getItem("token");
-      const partner_share_id = localStorage.getItem("partner_share_id");
-
-      if (!token || !partner_share_id) {
-         alert("Missing consent or token");
-         return;
-      }
-
-      try {
-         setDigestLoading(true);
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/consent/trigger-digest-preview`, {
-            method: "POST",
-            headers: {
-               "Content-Type": "application/json",
-               "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               partner_share_id,
-               send: true
-            })
-         });
-
-         const data = await res.json();
-         console.log("SEND DIGEST →", data);
-
-         if (data.success) {
-            alert("Digest sent successfully!");
-         }
-
-      } catch (e) {
-         console.error(e);
-         alert("Send failed");
-      } finally {
-         setDigestLoading(false);
-      }
-   };
 
    const updateShared = async () => {
       const token = localStorage.getItem("token");
@@ -234,9 +158,11 @@ export default function Dashboard() {
    }, []);
 
    const nutrition = insights?.nutritionInsights;
-   const firstRadarImage = nutrition?.radar?.[0]?.image_url
-  ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${nutrition.radar[0].image_url}`
-  : null;
+   const radarImages = nutrition?.radar?.map(item =>
+      item.image_url
+         ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${item.image_url}`
+         : null
+   ).filter(Boolean);
    const movement = insights?.movementInsights;
    const mensSupport = insights?.mensSupportInsights;
 
@@ -385,15 +311,31 @@ export default function Dashboard() {
                                           "Mood-based recipes and nutrition radar aligned with WHO/NIH guidance."}
                                     </p>
 
-                                    <figure className="mt-3">
-                                       <Image
-                                          loading="lazy"
-                                          width={420}
-                                          height={189}
-                                          src={firstRadarImage  || "/imags-place01.jpg"}
-                                          alt="Nutrition"
-                                       />
-                                    </figure>
+                                    <div className="row row-cols-1 row-cols-lg-3 gx-lg-4">
+                                       {radarImages?.length > 0 ? (
+                                          radarImages.map((img, index) => (
+                                             <figure className="col" key={index}>
+                                                <Image
+                                                   loading="lazy"
+                                                   width={420}
+                                                   height={189}
+                                                   src={img}
+                                                   alt={`Nutrition ${index + 1}`}
+                                                />
+                                             </figure>
+                                          ))
+                                       ) : (
+                                          <figure className="col">
+                                             <Image
+                                                loading="lazy"
+                                                width={420}
+                                                height={189}
+                                                src="/imags-place01.jpg"
+                                                alt="Nutrition"
+                                             />
+                                          </figure>
+                                       )}
+                                    </div>
 
                                     {/* Shared Shopping List */}
                                     {nutrition?.shopping_list?.length > 0 && (
@@ -538,23 +480,10 @@ export default function Dashboard() {
                                        />
                                     )}
 
-                                    <div className="d-flex align-items-center mt-3">
-
-                                       <button className="btn btn-strat btn-daind" disabled={digestLoading}
-                                          onClick={triggerDigestPreview}
-                                       >
-                                          {digestLoading ? "Loading..." : "Start"}
-                                       </button>
-                                       <button className="btn btn-pogress ms-2" disabled={digestLoading}
-                                          onClick={sendDigest}
-                                       >
-                                          {digestLoading ? "Sending..." : "Share Progress"}
-                                       </button>
-                                    </div>
-
                                     {mensSupport.digest_note && (
+                                        
                                        <p className="mt-3 digest01-titels">
-                                          Digest: {mensSupport.digest_note}
+                                         <h1>Digest:</h1> {mensSupport.digest_note}
                                        </p>
                                     )}
                                  </>
