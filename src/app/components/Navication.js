@@ -5,41 +5,48 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function Navication() {
-  const menulist = [
-    { id: 1, title: "Features", link: "/features" },
-    { id: 3, title: "How it work", link: "/howitwork" },
-    { id: 4, title: "Pricing", link: "/pricing" },
-    { id: 5, title: "Dashboard", link: "/dashboard" },
-    { id: 6, title: "Support Videos", link: "/support" },
-  ];
-
   const pathname = usePathname();
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    const userData = localStorage.getItem("user");
+
+    if (token && userData) {
+      const parsedUser = JSON.parse(userData);
+      setIsLoggedIn(true);
+      setRole(parsedUser.role); // ✅ get role from user object
+    }
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user"); // ✅ remove full user object
     setIsLoggedIn(false);
-    alert("Logged out successfully!");
+    setRole(null);
     window.location.href = "/";
   };
 
-  // 🔥 handle Dashboard click
-  const handleMenuClick = (e, link) => {
-    if (link === "/dashboard" && !isLoggedIn) {
+  const handleDashboardClick = (e) => {
+    if (!isLoggedIn) {
       e.preventDefault();
       document.getElementById("openLoginModalBtn")?.click();
       return;
+    }
+
+    e.preventDefault();
+
+    if (role === "partner") {
+      window.location.href = "/partnerdashboard"; // ✅ your correct route
+    } else {
+      window.location.href = "/dashboard";
     }
   };
 
   return (
     <>
-      {/* 🔥 Hidden modal trigger button */}
       <button
         id="openLoginModalBtn"
         type="button"
@@ -55,65 +62,74 @@ function Navication() {
               <Image
                 width={188}
                 height={46}
-                loading="lazy"
                 src="/logo-dark.svg"
-                alt="logos"
+                alt="logo"
               />
             </Link>
 
-            <div
-              className="collapse justify-content-center navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                {menulist.map((type) => (
-                  <li className="nav-item" key={type.id}>
-                    <Link
-                      className={`nav-link ${
-                        pathname === type.link ? "active" : ""
-                      }`}
-                      href={type.link}
-                      onClick={(e) => handleMenuClick(e, type.link)}
-                    >
-                      {type.title}
-                    </Link>
-                  </li>
-                ))}
+            <div className="collapse navbar-collapse justify-content-center">
+              <ul className="navbar-nav ms-auto">
+
+                <li className="nav-item">
+                  <Link className="nav-link" href="/features">Features</Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" href="/howitwork">How it work</Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" href="/pricing">Pricing</Link>
+                </li>
+
+                <li className="nav-item">
+                  <a
+                    href="#"
+                    className={`nav-link ${
+                      pathname.includes("dashboard") ? "active" : ""
+                    }`}
+                    onClick={handleDashboardClick}
+                  >
+                    Dashboard
+                  </a>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" href="/support">
+                    Support Videos
+                  </Link>
+                </li>
+
               </ul>
             </div>
 
-            <div className="rights-sections ms-auto d-table">
-              <ul className="m-0 p-0">
-                <li className="d-flex align-items-center">
-                  {isLoggedIn ? (
-                    <button className="btn btn-danger" onClick={handleLogout}>
-                      Logout
-                    </button>
-                  ) : (
-                    <>
-                    <button
-                      type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#loginmodal"
-                      className="btn login-btn"
-                    >
-                      Login
-                    </button>
-                    <button
+            <div className="ms-auto">
+              {isLoggedIn ? (
+                <button className="btn btn-danger" onClick={handleLogout}>
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#loginmodal"
+                    className="btn login-btn"
+                  >
+                    Login
+                  </button>
+                  <button
                     type="button"
                     data-bs-toggle="modal"
                     data-bs-target="#registernmodal"
                     className="btn signup-btn"
-                     >
+                  >
                     Get Started
                   </button>
-                  </>
-                  )}
-
-
-                </li>
-              </ul>
+                </>
+              )}
             </div>
+
           </div>
         </nav>
       </header>
