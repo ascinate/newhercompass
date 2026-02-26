@@ -92,45 +92,45 @@ export default function Dashboard() {
 
 
    const updateShared = async () => {
-   if (sharedFields.length === 0) {
-      alert("Please select at least one field to share.");
-      return;
-   }
-
-   setLoadingShared(true);
-
-   try {
-      const token = localStorage.getItem("token");
-
-      const response = await fetch(
-         `${process.env.NEXT_PUBLIC_API_URL}/api/partner/share`,
-         {
-         method: "POST",
-         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-            "Accept": "application/json"
-         },
-         body: JSON.stringify({
-            shared_fields: sharedFields
-         })
-         }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-         throw new Error(data.message || "Something went wrong");
+      if (sharedFields.length === 0) {
+         alert("Please select at least one field to share.");
+         return;
       }
 
-      alert("Shared successfully with partner 💛");
+      setLoadingShared(true);
 
-   } catch (error) {
-      console.error("Share error:", error);
-      alert(error.message || "Failed to share data");
-   } finally {
-      setLoadingShared(false);
-   }
+      try {
+         const token = localStorage.getItem("token");
+
+         const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/partner/share`,
+            {
+               method: "POST",
+               headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`,
+                  "Accept": "application/json"
+               },
+               body: JSON.stringify({
+                  shared_fields: sharedFields
+               })
+            }
+         );
+
+         const data = await response.json();
+
+         if (!response.ok) {
+            throw new Error(data.message || "Something went wrong");
+         }
+
+         alert("Shared successfully with partner 💛");
+
+      } catch (error) {
+         console.error("Share error:", error);
+         alert(error.message || "Failed to share data");
+      } finally {
+         setLoadingShared(false);
+      }
    };
 
    useEffect(() => {
@@ -327,6 +327,7 @@ export default function Dashboard() {
                                                    height={189}
                                                    src={img}
                                                    alt={`Nutrition ${index + 1}`}
+                                                   unoptimized
                                                 />
                                              </figure>
                                           ))
@@ -487,9 +488,9 @@ export default function Dashboard() {
                                     )}
 
                                     {mensSupport.digest_note && (
-                                        
+
                                        <p className="mt-3 digest01-titels">
-                                         <h1>Digest:</h1> {mensSupport.digest_note}
+                                          <h1>Digest:</h1> {mensSupport.digest_note}
                                        </p>
                                     )}
                                  </>
