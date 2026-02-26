@@ -134,10 +134,10 @@ export default function Dashboard() {
    };
 
    useEffect(() => {
-      const fetchInsights = async () => {
-         const token = localStorage.getItem("token");
-         if (!token) return;
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
+      const fetchInsights = async () => {
          try {
             const res = await fetch(
                `${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`,
@@ -151,18 +151,47 @@ export default function Dashboard() {
 
             const data = await res.json();
 
-            if (data.status) {
-               setInsights(data.insights);
+            if (!data.status) return;
+
+            // No symptom log yet
+            if (data.ai_status === null) {
+               setInsights(null);
+               return;
             }
 
-         } catch (err) {
-            console.error("Unable to load insights", err);
+            // AI still running
+            if (data.ai_status === "processing") {
+               setInsights(null);
+               setLoading(true);   // 👈 show loader
+               return;
+            }
+
+            // AI completed
+            if (data.ai_status === "completed") {
+               setLoading(false);
+               setInsights(data.insights);
+               return;
+            }
+
+            // AI failed
+            if (data.ai_status === "failed") {
+               setLoading(false);
+               console.error("AI failed");
+               setInsights(null);
+            }
+
+         } catch (error) {
+            console.error("Dashboard error:", error);
          }
       };
 
       fetchInsights();
-   }, []);
 
+      // Optional: Poll every 5 seconds while processing
+      const interval = setInterval(fetchInsights, 5000);
+      return () => clearInterval(interval);
+
+   }, []);
    const nutrition = insights?.nutritionInsights;
    const radarImages = nutrition?.radar?.map(item =>
       item.image_url
