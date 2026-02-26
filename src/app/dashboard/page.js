@@ -91,41 +91,47 @@ export default function Dashboard() {
    };
 
 
-
    const updateShared = async () => {
+   if (sharedFields.length === 0) {
+      alert("Please select at least one field to share.");
+      return;
+   }
+
+   setLoadingShared(true);
+
+   try {
       const token = localStorage.getItem("token");
-      const partner_share_id = localStorage.getItem("partner_share_id");
 
-      if (!token || !partner_share_id) return alert("Partner not selected");
-
-      try {
-         setLoadingShared(true);
-
-         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/consent/update-shared-fields`, {
-            method: "PUT",
-            headers: {
-               "Content-Type": "application/json",
-               "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-               partner_share_id,
-               shared_fields: sharedFields
-            })
-         });
-
-         const data = await res.json();
-         if (data.success) {
-            alert("Shared fields updated!");
+      const response = await fetch(
+         `${process.env.NEXT_PUBLIC_API_URL}/api/partner/share`,
+         {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/json"
+         },
+         body: JSON.stringify({
+            shared_fields: sharedFields
+         })
          }
+      );
 
-      } catch (err) {
-         console.error(err);
-         alert("Error updating shared fields");
-      } finally {
-         setLoadingShared(false);
+      const data = await response.json();
+
+      if (!response.ok) {
+         throw new Error(data.message || "Something went wrong");
       }
-   };
 
+      alert("Shared successfully with partner 💛");
+
+   } catch (error) {
+      console.error("Share error:", error);
+      alert(error.message || "Failed to share data");
+   } finally {
+      setLoadingShared(false);
+   }
+   };
 
    useEffect(() => {
       const fetchInsights = async () => {
