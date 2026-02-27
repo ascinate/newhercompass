@@ -195,7 +195,7 @@ export default function Dashboard() {
    const nutrition = insights?.nutritionInsights;
    const radarImages = nutrition?.radar?.map(item =>
       item.image_url
-         ? `${process.env.NEXT_PUBLIC_API_URL}/storage/${item.image_url}`
+         ? `${process.env.NEXT_PUBLIC_API_URL}/storage/app/public/${item.image_url}`
          : null
    ).filter(Boolean);
    const movement = insights?.movementInsights;
