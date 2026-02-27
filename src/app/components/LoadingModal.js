@@ -60,8 +60,8 @@ export default function LoadingModal({ show, apiFinished }) {
         {/* Optional Progress Bar */}
         <div className="progress mt-3">
           <div
-            className="progress-bar progress-bar-striped progress-bar-animated"
-            style={{ width: `${step * 25}%` }}
+            className="progress-bar"
+            style={{ width: `${progress}%` }}
           ></div>
         </div>
       </div>
