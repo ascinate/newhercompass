@@ -6,10 +6,8 @@ function LoginModal() {
   const [forgotEmail, setForgotEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
 
-  // LOGIN
+  // ================= LOGIN =================
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -41,14 +39,12 @@ function LoginModal() {
     }
   };
 
-  // SEND OTP
+  // ================= SEND OTP =================
   const handleSendOtp = async () => {
     if (!forgotEmail) return alert("Enter email");
 
-    setLoading(true);
-
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/forgot-password`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/forgot-password`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -57,44 +53,78 @@ function LoginModal() {
     );
 
     const data = await res.json();
-    setLoading(false);
 
     if (data.status) {
-      alert("OTP sent to your email");
-      setStep(2);
+      alert("OTP sent");
+      const modal = bootstrap.Modal.getInstance(
+        document.getElementById("forgotEmailModal")
+      );
+      modal.hide();
+
+      new bootstrap.Modal(
+        document.getElementById("otpModal")
+      ).show();
     } else {
       alert(data.message);
     }
   };
 
-  // RESET PASSWORD
-  const handleResetPassword = async () => {
-    if (!otp || !newPassword) return alert("Fill all fields");
-
-    setLoading(true);
+  // ================= VERIFY OTP =================
+  const handleVerifyOtp = async () => {
+    if (!otp) return alert("Enter OTP");
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/verify-otp`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: forgotEmail, otp }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.status) {
+      alert("OTP verified");
+
+      const modal = bootstrap.Modal.getInstance(
+        document.getElementById("otpModal")
+      );
+      modal.hide();
+
+      new bootstrap.Modal(
+        document.getElementById("resetPasswordModal")
+      ).show();
+    } else {
+      alert(data.message);
+    }
+  };
+
+  // ================= RESET PASSWORD =================
+  const handleResetPassword = async () => {
+    if (!newPassword) return alert("Enter new password");
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/users/reset-password`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: forgotEmail,
-          otp,
           password: newPassword,
         }),
       }
     );
 
     const data = await res.json();
-    setLoading(false);
 
     if (data.status) {
       alert("Password reset successful");
-      setStep(1);
-      setOtp("");
-      setNewPassword("");
-      setForgotEmail("");
+
+      const modal = bootstrap.Modal.getInstance(
+        document.getElementById("resetPasswordModal")
+      );
+      modal.hide();
     } else {
       alert(data.message);
     }
@@ -104,115 +134,96 @@ function LoginModal() {
     <>
       {/* LOGIN MODAL */}
       <div className="modal fade login-modals" id="loginmodal" tabIndex="-1">
-        <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-dialog modal-dialog-centered ">
           <div className="modal-content">
-            <div className="modal-header border-0">
+            <div className="modal-header p-0 border-0">
               <button className="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div className="modal-body">
-              <h2>Welcome Back</h2>
-              <p>Login to manage your bowling leagues</p>
+              <div className="logoin-modals">
+                <h2>Welcome Back</h2>
+                <p>Login to manage your bowling leagues</p>
 
-              <form onSubmit={handleLogin}>
-                <div className="form-group">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    required
-                  />
-                </div>
-
-                <div className="form-group mt-2">
-                  <div className="d-flex justify-content-between">
-                    <label>Password</label>
-                    <button
-                      type="button"
-                      className="btn p-0 text-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#forgotModal"
-                    >
-                      Forgot password?
-                    </button>
+                <form onSubmit={handleLogin}>
+                  <div className="form-group">
+                    <label className="form-label">Email Address</label>
+                    <input type="text" className="form-control" name="email" required />
                   </div>
 
-                  <input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    required
-                  />
-                </div>
+                  <div className="form-group">
+                    <div className="d-flex align-items-center justify-content-between w-100">
+                      <label className="form-label">Password</label>
+                      <button
+                        type="button"
+                        className="cl-fogets btn p-0"
+                        data-bs-toggle="modal"
+                        data-bs-target="#forgotEmailModal"
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
 
-                <button type="submit" className="btn btn-logins mt-3 w-100">
-                  Login
-                </button>
-              </form>
+                    <input type="password" className="form-control" name="password" required />
+                  </div>
+
+                  <div className="form-group mt-2">
+                    <button type="submit" className="btn btn-logins">Login</button>
+                  </div>
+                </form>
+
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* FORGOT PASSWORD MODAL */}
-      <div className="modal fade" id="forgotModal" tabIndex="-1">
+      {/* EMAIL MODAL */}
+      <div className="modal fade" id="forgotEmailModal" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-header border-0">
-              <h5>Reset Password</h5>
-              <button className="btn-close" data-bs-dismiss="modal"></button>
-            </div>
+          <div className="modal-content p-3">
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter your email"
+              onChange={(e) => setForgotEmail(e.target.value)}
+            />
+            <button className="btn btn-logins mt-3" onClick={handleSendOtp}>
+              Send OTP
+            </button>
+          </div>
+        </div>
+      </div>
 
-            <div className="modal-body">
-              {step === 1 && (
-                <>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Enter email"
-                    value={forgotEmail}
-                    onChange={(e) => setForgotEmail(e.target.value)}
-                  />
-                  <button
-                    className="btn btn-logins mt-3 w-100"
-                    onClick={handleSendOtp}
-                    disabled={loading}
-                  >
-                    {loading ? "Sending..." : "Send OTP"}
-                  </button>
-                </>
-              )}
+      {/* OTP MODAL */}
+      <div className="modal fade" id="otpModal" tabIndex="-1">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content p-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter OTP"
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            <button className="btn btn-logins mt-3" onClick={handleVerifyOtp}>
+              Verify OTP
+            </button>
+          </div>
+        </div>
+      </div>
 
-              {step === 2 && (
-                <>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-
-                  <input
-                    type="password"
-                    className="form-control mt-2"
-                    placeholder="New Password"
-                    value={newPassword}
-                    onChange={(e) =>
-                      setNewPassword(e.target.value)
-                    }
-                  />
-
-                  <button
-                    className="btn btn-logins mt-3 w-100"
-                    onClick={handleResetPassword}
-                    disabled={loading}
-                  >
-                    {loading ? "Processing..." : "Reset Password"}
-                  </button>
-                </>
-              )}
-            </div>
+      {/* RESET PASSWORD MODAL */}
+      <div className="modal fade" id="resetPasswordModal" tabIndex="-1">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content p-3">
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Enter New Password"
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <button className="btn btn-logins mt-3" onClick={handleResetPassword}>
+              Reset Password
+            </button>
           </div>
         </div>
       </div>
