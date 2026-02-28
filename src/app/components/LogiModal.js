@@ -7,6 +7,9 @@ function LoginModal() {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
+  const [showOtp, setShowOtp] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   // ================= LOGIN =================
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -55,13 +58,12 @@ function LoginModal() {
     const data = await res.json();
 
     if (data.status) {
-      alert("OTP sent");
-
       const { Modal } = await import("bootstrap");
 
       const emailModalEl = document.getElementById("forgotEmailModal");
       const emailModal = Modal.getInstance(emailModalEl);
       emailModal?.hide();
+      emailModal?.dispose();
 
       new Modal(document.getElementById("otpModal")).show();
     } else {
@@ -85,13 +87,12 @@ function LoginModal() {
     const data = await res.json();
 
     if (data.status) {
-      alert("OTP verified");
-
       const { Modal } = await import("bootstrap");
 
       const otpModalEl = document.getElementById("otpModal");
       const otpModal = Modal.getInstance(otpModalEl);
       otpModal?.hide();
+      otpModal?.dispose();
 
       new Modal(document.getElementById("resetPasswordModal")).show();
     } else {
@@ -118,13 +119,18 @@ function LoginModal() {
     const data = await res.json();
 
     if (data.status) {
-      alert("Password reset successful");
-
       const { Modal } = await import("bootstrap");
 
       const resetModalEl = document.getElementById("resetPasswordModal");
       const resetModal = Modal.getInstance(resetModalEl);
       resetModal?.hide();
+      resetModal?.dispose();
+
+      setForgotEmail("");
+      setOtp("");
+      setNewPassword("");
+      setShowOtp(false);
+      setShowPassword(false);
     } else {
       alert(data.message);
     }
@@ -146,13 +152,13 @@ function LoginModal() {
 
                 <form onSubmit={handleLogin}>
                   <div className="form-group">
-                    <label className="form-label">Email Address</label>
+                    <label>Email Address</label>
                     <input type="text" className="form-control" name="email" required />
                   </div>
 
-                  <div className="form-group">
-                    <div className="d-flex align-items-center justify-content-between w-100">
-                      <label className="form-label">Password</label>
+                  <div className="form-group position-relative">
+                    <div className="d-flex justify-content-between">
+                      <label>Password</label>
                       <button
                         type="button"
                         className="cl-fogets btn p-0"
@@ -163,14 +169,18 @@ function LoginModal() {
                       </button>
                     </div>
 
-                    <input type="password" className="form-control" name="password" required />
+                    <input
+                      type="password"
+                      className="form-control"
+                      name="password"
+                      required
+                    />
                   </div>
 
-                  <div className="form-group mt-2">
-                    <button type="submit" className="btn btn-logins">Login</button>
-                  </div>
+                  <button type="submit" className="btn btn-logins mt-3">
+                    Login
+                  </button>
                 </form>
-
               </div>
             </div>
           </div>
@@ -180,16 +190,21 @@ function LoginModal() {
       {/* EMAIL MODAL */}
       <div className="modal fade" id="forgotEmailModal" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content p-3">
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter your email"
-              onChange={(e) => setForgotEmail(e.target.value)}
-            />
-            <button className="btn btn-logins mt-3" onClick={handleSendOtp}>
-              Send OTP
-            </button>
+          <div className="modal-content">
+            <div className="modal-header p-0 border-0">
+              <button className="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div className="modal-body p-3">
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter your email"
+                onChange={(e) => setForgotEmail(e.target.value)}
+              />
+              <button className="btn btn-logins mt-3 w-100" onClick={handleSendOtp}>
+                Send OTP
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -197,16 +212,29 @@ function LoginModal() {
       {/* OTP MODAL */}
       <div className="modal fade" id="otpModal" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content p-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Enter OTP"
-              onChange={(e) => setOtp(e.target.value)}
-            />
-            <button className="btn btn-logins mt-3" onClick={handleVerifyOtp}>
-              Verify OTP
-            </button>
+          <div className="modal-content">
+            <div className="modal-header p-0 border-0">
+              <button className="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div className="modal-body p-3 position-relative">
+              <div className="position-relative">
+                <input
+                  type={showOtp ? "text" : "password"}
+                  className="form-control"
+                  placeholder="Enter OTP"
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+                <span
+                  onClick={() => setShowOtp(!showOtp)}
+                  style={{ position: "absolute", right: "10px", top: "8px", cursor: "pointer" }}
+                >
+                  👁
+                </span>
+              </div>
+              <button className="btn btn-logins mt-3 w-100" onClick={handleVerifyOtp}>
+                Verify OTP
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -214,16 +242,29 @@ function LoginModal() {
       {/* RESET PASSWORD MODAL */}
       <div className="modal fade" id="resetPasswordModal" tabIndex="-1">
         <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content p-3">
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter New Password"
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <button className="btn btn-logins mt-3" onClick={handleResetPassword}>
-              Reset Password
-            </button>
+          <div className="modal-content">
+            <div className="modal-header p-0 border-0">
+              <button className="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div className="modal-body p-3 position-relative">
+              <div className="position-relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="form-control"
+                  placeholder="Enter New Password"
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ position: "absolute", right: "10px", top: "8px", cursor: "pointer" }}
+                >
+                  👁
+                </span>
+              </div>
+              <button className="btn btn-logins mt-3 w-100" onClick={handleResetPassword}>
+                Reset Password
+              </button>
+            </div>
           </div>
         </div>
       </div>
