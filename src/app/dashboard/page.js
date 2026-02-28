@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from 'next/image';
 import Navication from '../components/Navication';
 import Footer from '../components/Footer';
@@ -11,6 +11,7 @@ import LoadingModal from "../components/LoadingModal";
 import axios from "axios";
 
 export default function Dashboard() {
+   const hasPrefilled = useRef(false);
 
    const [mood, setMood] = useState(null);
    const [symptom, setSymptom] = useState(null);
@@ -149,7 +150,7 @@ export default function Dashboard() {
 
             if (!data.status) return;
 
-            if (data.latest_log) {
+            if (data.latest_log && !hasPrefilled.current) {
                setMood(data.latest_log.mood || null);
                setSleepHours(data.latest_log.sleep_hours || "");
                setEnergyLevel(data.latest_log.energy_level || "");
@@ -159,6 +160,8 @@ export default function Dashboard() {
                }
 
                setNote(data.latest_log.notes || "");
+
+               hasPrefilled.current = true;
             }
 
             // No symptom log yet
