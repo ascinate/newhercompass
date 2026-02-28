@@ -250,8 +250,18 @@ function LoginModal() {
         </div>
       </div>
       {successMessage && (
-        <div className="position-fixed top-0 start-50 translate-middle-x mt-4" style={{ zIndex: 9999 }}>
-          <div className="alert alert-success shadow px-4 py-2">
+        <div
+          style={{
+            position: "fixed",
+            top: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 2000,
+            width: "auto",
+            minWidth: "300px"
+          }}
+        >
+          <div className="alert alert-success text-center shadow">
             {successMessage}
           </div>
         </div>
