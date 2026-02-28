@@ -71,16 +71,12 @@ export default function Dashboard() {
          console.log("SAVE LOG RESPONSE:", data);
 
          if (data.success) {
-            window.location.reload();
+            alert("Log saved successfully");
+            // Do nothing else
+            // State already holds latest selected values
          } else {
             alert(data.message || "Failed to save log");
          }
-
-         setMood(null);
-         setSymptom(null);
-         setNote("");
-         setSleepHours("");
-         setEnergyLevel("");
 
       } catch (err) {
          console.error(err);
