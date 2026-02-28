@@ -292,7 +292,9 @@ export default function Dashboard() {
                               {insights?.correlationInsight && (
                                  <div className="founds-div mt-3">
                                     <h4 className="card-title">Correlation found</h4>
-                                    <p>{insights.correlationInsight}</p>
+                                    <p className="line-clamp-2">
+                                       {insights.correlationInsight}
+                                    </p>
                                     <button
                                        type="button"
                                        className="btn btn-veiews btn-primary mt-3"
@@ -310,7 +312,7 @@ export default function Dashboard() {
                               {insights?.predictiveInsight && (
                                  <div className="founds-div mt-3">
                                     <h4 className="card-title">Predictive insight</h4>
-                                    <p>{insights.predictiveInsight}</p>
+                                    <p className="line-clamp-2">{insights.predictiveInsight}</p>
                                     <button
                                        type="button"
                                        className="btn btn-veiews btn-primary mt-3"
