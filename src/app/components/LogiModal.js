@@ -44,7 +44,7 @@ function LoginModal() {
     if (!forgotEmail) return alert("Enter email");
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/forgot-password`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/forgot-password`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ function LoginModal() {
     if (!otp) return alert("Enter OTP");
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/verify-otp`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/verify-otp`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -105,7 +105,7 @@ function LoginModal() {
     if (!newPassword) return alert("Enter new password");
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/reset-password`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
