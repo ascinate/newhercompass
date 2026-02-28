@@ -149,6 +149,18 @@ export default function Dashboard() {
 
             if (!data.status) return;
 
+            if (data.latest_log) {
+               setMood(data.latest_log.mood || null);
+               setSleepHours(data.latest_log.sleep_hours || "");
+               setEnergyLevel(data.latest_log.energy_level || "");
+
+               if (data.latest_log.symptoms?.length > 0) {
+                  setSymptom(data.latest_log.symptoms[0]);
+               }
+
+               setNote(data.latest_log.notes || "");
+            }
+
             // No symptom log yet
             if (data.ai_status === null) {
                setInsights(null);
