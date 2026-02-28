@@ -56,14 +56,14 @@ function LoginModal() {
 
     if (data.status) {
       alert("OTP sent");
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("forgotEmailModal")
-      );
-      modal.hide();
 
-      new bootstrap.Modal(
-        document.getElementById("otpModal")
-      ).show();
+      const { Modal } = await import("bootstrap");
+
+      const emailModalEl = document.getElementById("forgotEmailModal");
+      const emailModal = Modal.getInstance(emailModalEl);
+      emailModal?.hide();
+
+      new Modal(document.getElementById("otpModal")).show();
     } else {
       alert(data.message);
     }
@@ -87,14 +87,13 @@ function LoginModal() {
     if (data.status) {
       alert("OTP verified");
 
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("otpModal")
-      );
-      modal.hide();
+      const { Modal } = await import("bootstrap");
 
-      new bootstrap.Modal(
-        document.getElementById("resetPasswordModal")
-      ).show();
+      const otpModalEl = document.getElementById("otpModal");
+      const otpModal = Modal.getInstance(otpModalEl);
+      otpModal?.hide();
+
+      new Modal(document.getElementById("resetPasswordModal")).show();
     } else {
       alert(data.message);
     }
@@ -121,10 +120,11 @@ function LoginModal() {
     if (data.status) {
       alert("Password reset successful");
 
-      const modal = bootstrap.Modal.getInstance(
-        document.getElementById("resetPasswordModal")
-      );
-      modal.hide();
+      const { Modal } = await import("bootstrap");
+
+      const resetModalEl = document.getElementById("resetPasswordModal");
+      const resetModal = Modal.getInstance(resetModalEl);
+      resetModal?.hide();
     } else {
       alert(data.message);
     }
