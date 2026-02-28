@@ -217,19 +217,21 @@ function LoginModal() {
               <button className="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div className="modal-body p-3 position-relative">
-              <div className="position-relative">
+              <div className="input-group">
                 <input
                   type={showOtp ? "text" : "password"}
                   className="form-control"
                   placeholder="Enter OTP"
+                  value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                 />
-                <span
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
                   onClick={() => setShowOtp(!showOtp)}
-                  style={{ position: "absolute", right: "10px", top: "8px", cursor: "pointer" }}
                 >
                   👁
-                </span>
+                </button>
               </div>
               <button className="btn btn-logins mt-3 w-100" onClick={handleVerifyOtp}>
                 Verify OTP
@@ -247,19 +249,21 @@ function LoginModal() {
               <button className="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div className="modal-body p-3 position-relative">
-              <div className="position-relative">
+              <div className="input-group">
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-control"
                   placeholder="Enter New Password"
+                  value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
-                <span
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
                   onClick={() => setShowPassword(!showPassword)}
-                  style={{ position: "absolute", right: "10px", top: "8px", cursor: "pointer" }}
                 >
                   👁
-                </span>
+                </button>
               </div>
               <button className="btn btn-logins mt-3 w-100" onClick={handleResetPassword}>
                 Reset Password
