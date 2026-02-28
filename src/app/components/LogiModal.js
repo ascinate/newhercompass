@@ -48,7 +48,7 @@ function LoginModal() {
     setLoading(true);
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/forgot-password`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/forgot-password`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ function LoginModal() {
     setLoading(true);
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/users/reset-password`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/reset-password`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
