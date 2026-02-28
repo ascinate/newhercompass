@@ -6,6 +6,7 @@ function LoginModal() {
   const [forgotEmail, setForgotEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   // ================= LOGIN =================
   const handleLogin = async (e) => {
@@ -105,9 +106,17 @@ function LoginModal() {
 
     if (data.status) {
       document.getElementById("closeResetModalBtn").click();
+
       setForgotEmail("");
       setOtp("");
       setNewPassword("");
+
+      setSuccessMessage("Password reset successfully. You can now login.");
+
+      // Auto remove after 4 seconds
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 4000);
     } else {
       alert(data.message);
     }
@@ -240,6 +249,13 @@ function LoginModal() {
           </div>
         </div>
       </div>
+      {successMessage && (
+        <div className="position-fixed top-0 start-50 translate-middle-x mt-4" style={{ zIndex: 9999 }}>
+          <div className="alert alert-success shadow px-4 py-2">
+            {successMessage}
+          </div>
+        </div>
+      )}
       {/* Hidden Controls */}
       <button
         id="openOtpModalBtn"
