@@ -294,7 +294,7 @@ export default function Dashboard() {
                                     onClick={saveLog}
                                     disabled={loading}
                                  >
-                                    Save Log
+                                    Save
                                  </button>
 
                               </div>
