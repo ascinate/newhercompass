@@ -56,6 +56,7 @@ function LoginModal() {
 
     if (data.status) {
       document.getElementById("closeEmailModalBtn").click();
+      alert("Verification code sent. Please check your email.");
       setTimeout(() => {
         document.getElementById("openOtpModalBtn").click();
       }, 300);
