@@ -615,15 +615,7 @@ export default function Dashboard() {
                      <div className="modal-body" id="aiInsightsModalBody">
                         {/* Content will be inserted dynamically */}
                      </div>
-                     <div className="modal-footer">
-                        <button
-                           type="button"
-                           className="btn btn-secondary"
-                           data-bs-dismiss="modal"
-                        >
-                           Close
-                        </button>
-                     </div>
+
                   </div>
                </div>
             </div>
