@@ -39,7 +39,6 @@ function LoginModal() {
     }
   };
 
-  // ================= SEND OTP =================
   const handleSendOtp = async () => {
     if (!forgotEmail) return alert("Enter email");
 
@@ -55,22 +54,15 @@ function LoginModal() {
     const data = await res.json();
 
     if (data.status) {
-      const emailModalEl = document.getElementById("forgotEmailModal");
-      const emailModal = window.bootstrap.Modal.getInstance(emailModalEl);
-      emailModal?.hide();
-
+      document.getElementById("closeEmailModalBtn").click();
       setTimeout(() => {
-        const otpModal = new window.bootstrap.Modal(
-          document.getElementById("otpModal")
-        );
-        otpModal.show();
+        document.getElementById("openOtpModalBtn").click();
       }, 300);
     } else {
       alert(data.message);
     }
   };
 
-  // ================= VERIFY OTP =================
   const handleVerifyOtp = async () => {
     if (!otp) return alert("Enter OTP");
 
@@ -86,22 +78,14 @@ function LoginModal() {
     const data = await res.json();
 
     if (data.status) {
-      const otpModalEl = document.getElementById("otpModal");
-      const otpModal = window.bootstrap.Modal.getInstance(otpModalEl);
-      otpModal?.hide();
-
+      document.getElementById("closeOtpModalBtn").click();
       setTimeout(() => {
-        const resetModal = new window.bootstrap.Modal(
-          document.getElementById("resetPasswordModal")
-        );
-        resetModal.show();
+        document.getElementById("openResetModalBtn").click();
       }, 300);
     } else {
       alert(data.message);
     }
   };
-
-  // ================= RESET PASSWORD =================
   const handleResetPassword = async () => {
     if (!newPassword) return alert("Enter new password");
 
@@ -120,10 +104,7 @@ function LoginModal() {
     const data = await res.json();
 
     if (data.status) {
-      const resetModalEl = document.getElementById("resetPasswordModal");
-      const resetModal = window.bootstrap.Modal.getInstance(resetModalEl);
-      resetModal?.hide();
-
+      document.getElementById("closeResetModalBtn").click();
       setForgotEmail("");
       setOtp("");
       setNewPassword("");
@@ -131,7 +112,6 @@ function LoginModal() {
       alert(data.message);
     }
   };
-
   return (
     <>
       {/* LOGIN MODAL */}
@@ -186,7 +166,11 @@ function LoginModal() {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header p-0 border-0">
-              <button className="btn-close" data-bs-dismiss="modal"></button>
+              <button
+                id="closeEmailModalBtn"
+                className="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
             </div>
             <div className="modal-body p-3">
               <input
@@ -208,7 +192,11 @@ function LoginModal() {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header p-0 border-0">
-              <button className="btn-close" data-bs-dismiss="modal"></button>
+              <button
+                id="closeOtpModalBtn"
+                className="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
             </div>
             <div className="modal-body p-3">
               <input
@@ -231,7 +219,11 @@ function LoginModal() {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header p-0 border-0">
-              <button className="btn-close" data-bs-dismiss="modal"></button>
+              <button
+                id="closeResetModalBtn"
+                className="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
             </div>
             <div className="modal-body p-3">
               <input
@@ -248,6 +240,22 @@ function LoginModal() {
           </div>
         </div>
       </div>
+      {/* Hidden Controls */}
+      <button
+        id="openOtpModalBtn"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#otpModal"
+        style={{ display: "none" }}
+      ></button>
+
+      <button
+        id="openResetModalBtn"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#resetPasswordModal"
+        style={{ display: "none" }}
+      ></button>
     </>
   );
 }
