@@ -19,9 +19,8 @@ export default function Dashboard() {
    const [loading, setLoading] = useState(false);
    const [sleepHours, setSleepHours] = useState("");
    const [energyLevel, setEnergyLevel] = useState("");
-   const [digestPreview, setDigestPreview] = useState(null);
-   const [digestLoading, setDigestLoading] = useState(false);
-
+   const [showRoutineModal, setShowRoutineModal] = useState(false);
+   const [showCoupleModal, setShowCoupleModal] = useState(false);
    const [sharedFields, setSharedFields] = useState([]);
    const [loadingShared, setLoadingShared] = useState(false);
    const [insights, setInsights] = useState(null);
@@ -336,8 +335,8 @@ export default function Dashboard() {
                                                 <h6 class="mt-3">Key Patterns</h6>
                                                 <ul>
                                                    ${insights.correlationInsight.key_patterns
-                                                                                    ?.map(p => `<li>${p}</li>`)
-                                                                                    .join("")}
+                                                   ?.map(p => `<li>${p}</li>`)
+                                                   .join("")}
                                                 </ul>
 
                                                 <small class="text-muted">
@@ -454,13 +453,6 @@ export default function Dashboard() {
                                           <>
                                              <h5>{nutrition.suggested_recipe.title}</h5>
                                              <p>{nutrition.suggested_recipe.benefit}</p>
-
-                                             <button
-                                                type="button"
-                                                className="btn btn-primary btn-daind mt-3"
-                                             >
-                                                Add to Shopping
-                                             </button>
                                           </>
                                        ) : (
                                           <p className="text-muted">
@@ -470,18 +462,6 @@ export default function Dashboard() {
                                     </div>
                                  </div>
                               </div>
-
-                              {/* Manual Add */}
-                              <div className="d-flex align-items-center mt-4">
-                                 <input
-                                    type="text"
-                                    className="form-control mt-0"
-                                    placeholder="Add item"
-                                 />
-                                 <button type="button" className="btn btn-success m-0 ms-3">
-                                    Add
-                                 </button>
-                              </div>
                            </div>
                         </div>
 
@@ -489,58 +469,139 @@ export default function Dashboard() {
                            <div className="card-body py-0">
                               <div className="row">
                                  <div className="col-lg-8">
-                                    <h4 className="card-title">  Workouts & Meditation </h4>
-                                    <p className="mt-2"> Adaptive workouts and guided meditations based on symptoms and goals. </p>
+                                    <h4 className="card-title">Workouts & Meditation</h4>
+                                    <p className="mt-2">
+                                       Adaptive workouts and guided meditations based on symptoms and goals.
+                                    </p>
                                  </div>
                                  <div className="col-lg-4">
-                                    <p> SCI: ACOG/NIH guidance </p>
+                                    <p>SCI: ACOG/NIH guidance</p>
                                  </div>
                               </div>
-
-
 
                               <div className="row align-items-stretch mt-3">
                                  <div className="col-lg-8">
-                                    {movement?.tonight && (
-                                       <div className="bg-light p-4">
-                                          <h4 className="card-title"> Suggested for tonight </h4>
-                                          <p> {movement.tonight.title} — {movement.tonight.duration} </p>
-                                          <p className="mt-2">{movement.tonight.description}</p>
-                                          <div className="d-flex align-items-center justify-content-between mt-3">
-                                             <button type="button" className="btn btn-daind">Start {movement.tonight.type} </button>
-                                             <button type="button" className="btn no-tbn ms-3">Add to couple challenge </button>
-                                          </div>
-                                       </div>
-                                    )}
 
-
+                                    {/* Routine Section */}
                                     {movement?.routine && (
                                        <div className="new-crad01 mt-4">
-                                          <h4 className="card-title">  {movement.routine.title} </h4>
-                                          <p> {movement.routine.description} </p>
-                                          <button type="button" className="btn btn-buy btn-primary mt-3"> View Routine </button>
+                                          <h4 className="card-title">{movement.routine.title}</h4>
+                                          <p>{movement.routine.description}</p>
+
+                                          <button
+                                             type="button"
+                                             className="btn btn-buy btn-primary mt-3"
+                                             onClick={() => setShowRoutineModal(true)}
+                                          >
+                                             View Routine
+                                          </button>
                                        </div>
                                     )}
                                  </div>
+
+                                 {/* Couple Mode */}
                                  {movement?.couple_mode && (
                                     <div className="col-lg-4">
                                        <div className="bg-light p-3">
-                                          <h4 className="card-title"> Couple Mode  </h4>
-                                          <p>Benefit: {movement.couple_mode.benefit}   </p>
-                                          <p> Try: {movement.couple_mode.challenge} </p>
-                                          <button type="button" className="btn btn-views-ch mt-3"> Start Challenge </button>
+                                          <h4 className="card-title">Couple Mode</h4>
+                                          <p><strong>Benefit:</strong> {movement.couple_mode.benefit}</p>
+                                          <p><strong>Try:</strong> {movement.couple_mode.challenge}</p>
+
+                                          <button
+                                             type="button"
+                                             className="btn btn-views-ch mt-3"
+                                             onClick={() => setShowCoupleModal(true)}
+                                          >
+                                             Start Challenge
+                                          </button>
                                        </div>
                                     </div>
                                  )}
-
-
                               </div>
-
-
-
-
                            </div>
                         </div>
+                        {showRoutineModal && (
+                           <div className="modal fade show d-block" tabIndex="-1">
+                              <div className="modal-dialog modal-dialog-centered">
+                                 <div className="modal-content">
+
+                                    <div className="modal-header">
+                                       <h5 className="modal-title">
+                                          {movement?.routine?.title}
+                                       </h5>
+                                       <button
+                                          type="button"
+                                          className="btn-close"
+                                          onClick={() => setShowRoutineModal(false)}
+                                       ></button>
+                                    </div>
+
+                                    <div className="modal-body">
+                                       <p>{movement?.routine?.description}</p>
+
+                                       <p className="text-muted mt-3">
+                                          This routine is personalized based on your latest symptom patterns.
+                                       </p>
+                                    </div>
+
+                                    <div className="modal-footer">
+                                       <button
+                                          className="btn btn-secondary"
+                                          onClick={() => setShowRoutineModal(false)}
+                                       >
+                                          Close
+                                       </button>
+
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                        )}
+                        {showCoupleModal && (
+                           <div className="modal fade show d-block" tabIndex="-1">
+                              <div className="modal-dialog modal-dialog-centered">
+                                 <div className="modal-content">
+
+                                    <div className="modal-header">
+                                       <h5 className="modal-title">Couple Challenge</h5>
+                                       <button
+                                          type="button"
+                                          className="btn-close"
+                                          onClick={() => setShowCoupleModal(false)}
+                                       ></button>
+                                    </div>
+
+                                    <div className="modal-body">
+                                       <p>
+                                          <strong>Challenge:</strong>{" "}
+                                          {movement?.couple_mode?.challenge}
+                                       </p>
+
+                                       <p className="mt-2">
+                                          <strong>Benefit:</strong>{" "}
+                                          {movement?.couple_mode?.benefit}
+                                       </p>
+
+                                       <p className="text-muted mt-3">
+                                          Doing this together strengthens connection and lowers stress.
+                                       </p>
+                                    </div>
+
+                                    <div className="modal-footer">
+                                       <button
+                                          className="btn btn-secondary"
+                                          onClick={() => setShowCoupleModal(false)}
+                                       >
+                                          Close
+                                       </button>
+
+                                    </div>
+
+                                 </div>
+                              </div>
+                           </div>
+                        )}
 
 
                      </div>
