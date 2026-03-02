@@ -206,7 +206,6 @@ export default function Dashboard() {
 
       fetchInsights();
 
-      // Optional: Poll every 5 seconds while processing
       const interval = setInterval(fetchInsights, 5000);
       return () => clearInterval(interval);
 
@@ -555,10 +554,10 @@ export default function Dashboard() {
                               <p>
                                  Short interactive micro-courses to build empathy and communication skills.
                               </p>
+
                               {mensSupport?.recommended_module && (
                                  <>
-
-                                    <h5 className="mt-2 mb-3 sub-content">
+                                    <h5 className="mt-2 mb-2 sub-content">
                                        Recommended: {mensSupport.recommended_module.title} —{" "}
                                        {mensSupport.recommended_module.duration}
                                     </h5>
@@ -566,21 +565,27 @@ export default function Dashboard() {
                                     <p className="mt-2">
                                        {mensSupport.recommended_module.description}
                                     </p>
-                                    {digestPreview && (
-                                       <div
-                                          className="border p-3 mt-2"
-                                          style={{ background: "#fafafa" }}
-                                          dangerouslySetInnerHTML={{ __html: digestPreview }}
-                                       />
-                                    )}
 
-                                    {mensSupport.digest_note && (
-
-                                       <p className="mt-3 digest01-titels">
-                                          <h1>Digest:</h1> {mensSupport.digest_note}
+                                    {mensSupport.why_recommended && (
+                                       <p className="mt-2 text-muted">
+                                          <strong>Why this is recommended:</strong>{" "}
+                                          {mensSupport.why_recommended}
                                        </p>
                                     )}
                                  </>
+                              )}
+
+                              {mensSupport?.partner_summary && (
+                                 <div className="mt-3">
+                                    <h5>Partner Digest</h5>
+                                    <p>{mensSupport.partner_summary}</p>
+                                 </div>
+                              )}
+
+                              {mensSupport?.digest_note && (
+                                 <div className="mt-2 text-muted">
+                                    <p>{mensSupport.digest_note}</p>
+                                 </div>
                               )}
                            </div>
                         </div>
