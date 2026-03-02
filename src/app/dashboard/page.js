@@ -14,7 +14,7 @@ export default function Dashboard() {
    const hasPrefilled = useRef(false);
 
    const [mood, setMood] = useState(null);
-   const [symptom, setSymptom] = useState(null);
+   const [symptom, setSymptom] = useState([]);
    const [note, setNote] = useState("");
    const [loading, setLoading] = useState(false);
    const [sleepHours, setSleepHours] = useState("");
@@ -25,6 +25,14 @@ export default function Dashboard() {
    const [sharedFields, setSharedFields] = useState([]);
    const [loadingShared, setLoadingShared] = useState(false);
    const [insights, setInsights] = useState(null);
+
+   const toggleSymptom = (item) => {
+      setSymptom(prev =>
+         prev.includes(item)
+            ? prev.filter(s => s !== item)
+            : [...prev, item]
+      );
+   };
 
    const toggleField = (field) => {
       setSharedFields(prev =>
@@ -62,7 +70,7 @@ export default function Dashboard() {
                   mood: Number(mood),
                   sleep_hours: sleepHours ? Number(sleepHours) : null,
                   energy_level: energyLevel ? Number(energyLevel) : null,
-                  symptoms: Array.isArray(symptom) ? symptom : [symptom],
+                  symptoms: symptom.length > 0 ? symptom : null,
                   notes: note || null
                }),
             }
@@ -156,7 +164,7 @@ export default function Dashboard() {
                setEnergyLevel(data.latest_log.energy_level || "");
 
                if (data.latest_log.symptoms?.length > 0) {
-                  setSymptom(data.latest_log.symptoms[0]);
+                  setSymptom(data.latest_log.symptoms);
                }
 
                setNote(data.latest_log.notes || "");
@@ -251,8 +259,8 @@ export default function Dashboard() {
                                  {symptomsList.map((item, idx) => (
                                     <li
                                        key={idx}
-                                       className={symptom === item ? "active" : ""}
-                                       onClick={() => setSymptom(item)}
+                                       className={symptom.includes(item) ? "active" : ""}
+                                       onClick={() => toggleSymptom(item)}
                                        style={{ cursor: "pointer" }}
                                     >
                                        {item}
@@ -303,13 +311,17 @@ export default function Dashboard() {
                         <div className="card">
                            <div className="card-body py-0">
                               <h4 className="card-title">AI Insights</h4>
-                              <p>Examples of personalized insights generated from logs.</p>
-                              {insights?.correlationInsight && (
+                              <p>Personalized analysis based on your last 7 days.</p>
+
+                              {/* Correlation Insight */}
+                              {insights?.correlationInsight?.analysis && (
                                  <div className="founds-div mt-3">
-                                    <h4 className="card-title">Correlation found</h4>
+                                    <h4 className="card-title">Correlation Found</h4>
+
                                     <p className="line-clamp-2">
-                                       {insights.correlationInsight}
+                                       {insights.correlationInsight.analysis}
                                     </p>
+
                                     <button
                                        type="button"
                                        className="btn btn-veiews btn-primary mt-3"
@@ -317,17 +329,39 @@ export default function Dashboard() {
                                        data-bs-target="#aiInsightsModal"
                                        onClick={() => {
                                           const modalBody = document.getElementById("aiInsightsModalBody");
-                                          if (modalBody) modalBody.innerHTML = insights.correlationInsight;
+                                          if (modalBody) {
+                                             modalBody.innerHTML = `
+                                                <h5>Analysis</h5>
+                                                <p>${insights.correlationInsight.analysis}</p>
+
+                                                <h6 class="mt-3">Key Patterns</h6>
+                                                <ul>
+                                                   ${insights.correlationInsight.key_patterns
+                                                                                    ?.map(p => `<li>${p}</li>`)
+                                                                                    .join("")}
+                                                </ul>
+
+                                                <small class="text-muted">
+                                                   ${insights.correlationInsight.citations?.join(", ")}
+                                                </small>
+                                             `;
+                                          }
                                        }}
                                     >
                                        View Related Logs
                                     </button>
                                  </div>
                               )}
-                              {insights?.predictiveInsight && (
+
+                              {/* Predictive Insight */}
+                              {insights?.predictiveInsight?.forecast && (
                                  <div className="founds-div mt-3">
-                                    <h4 className="card-title">Predictive insight</h4>
-                                    <p className="line-clamp-2">{insights.predictiveInsight}</p>
+                                    <h4 className="card-title">Predictive Insight</h4>
+
+                                    <p className="line-clamp-2">
+                                       {insights.predictiveInsight.forecast}
+                                    </p>
+
                                     <button
                                        type="button"
                                        className="btn btn-veiews btn-primary mt-3"
@@ -335,14 +369,25 @@ export default function Dashboard() {
                                        data-bs-target="#aiInsightsModal"
                                        onClick={() => {
                                           const modalBody = document.getElementById("aiInsightsModalBody");
-                                          if (modalBody) modalBody.innerHTML = insights.predictiveInsight;
+                                          if (modalBody) {
+                                             modalBody.innerHTML = `
+                                             <h5>Forecast</h5>
+                                             <p>${insights.predictiveInsight.forecast}</p>
+
+                                             <h6 class="mt-3">Risk Reasoning</h6>
+                                             <p>${insights.predictiveInsight.risk_reasoning}</p>
+
+                                             <small class="text-muted">
+                                                ${insights.predictiveInsight.citations?.join(", ")}
+                                             </small>
+                                          `;
+                                          }
                                        }}
                                     >
-                                       Start sleep plan
+                                       Start Sleep Plan
                                     </button>
                                  </div>
                               )}
-
                            </div>
                         </div>
 
