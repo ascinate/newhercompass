@@ -396,19 +396,24 @@ export default function Dashboard() {
                               <div className="row">
                                  <div className="col-lg-8">
                                     <h4 className="card-title">Nutrition & Recipes</h4>
-                                    {nutrition?.graph && (
-                                      <div className="mb-3">
-                                        <Image
-                                          loading="lazy"
-                                          width={800}
-                                          height={300}
-                                          src={`${process.env.NEXT_PUBLIC_API_URL}/storage/app/public/${nutrition.graph}`}
-                                          alt="Nutrition Graph"
-                                          className="w-100 rounded"
-                                          unoptimized
-                                        />
-                                      </div>
-                                    )}
+
+
+                                    {radarImages?.length > 0 && (
+                                         <div className="d-flex gap-2 mb-3 overflow-auto">
+                                           {radarImages.map((img, i) => (
+                                             <Image
+                                               key={i}
+                                               src={img}
+                                               width={200}
+                                               height={120}
+                                               alt="Graph"
+                                               className="rounded"
+                                               unoptimized
+                                             />
+                                           ))}
+                                         </div>
+                                       )}
+                                 
                                     <p className="mt-2">
                                        {nutrition?.summary ||
                                           "Mood-based recipes and nutrition radar aligned with WHO/NIH guidance."}
