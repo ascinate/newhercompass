@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
  
 function Footer() {
-    const footerlink = [{ id: 1, title: 'About us' , link: '/'}, { id: 2, title: 'How it work' , link: '/howitwork'}, {id:3, title: 'Privacy' , link: '/privacy '}, {id:4, title: 'Terms' , link: '/Terms '} ]; 
+    const footerlink = [{ id: 1, title: 'About us' , link: '/about'}, { id: 2, title: 'How it work' , link: '/howitwork'}, {id:3, title: 'Privacy' , link: '/privacy '}, {id:4, title: 'Terms' , link: '/terms '} ]; 
     return(
      <>
         <footer className="float-start w-100 position-relative">
