@@ -14,35 +14,10 @@ import {
   LineElement,
   CategoryScale,
   LinearScale,
-  PointElement,
-  Tooltip,
-  Legend
+  PointElement
 } from "chart.js";
 
-ChartJS.register(
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  Tooltip,
-  Legend
-);
-
-const graphData = {
-  labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-  datasets: [
-    {
-      label: "Energy",
-      data: insights?.correlationInsight?.energy_trend || [2, 3, 3, 4, 2, 3, 4],
-      tension: 0.4
-    },
-    {
-      label: "Sleep",
-      data: insights?.correlationInsight?.sleep_trend || [3, 2, 4, 3, 3, 4, 5],
-      tension: 0.4
-    }
-  ]
-};
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 import axios from "axios";
 
@@ -60,6 +35,18 @@ export default function Dashboard() {
    const [sharedFields, setSharedFields] = useState([]);
    const [loadingShared, setLoadingShared] = useState(false);
    const [insights, setInsights] = useState(null);
+
+
+const graphData = {
+  labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  datasets: [
+    {
+      data: Array.from({ length: 7 }, () => Math.floor(Math.random() * 10) + 1),
+      tension: 0.4
+    }
+  ]
+};
+  
 
    const toggleSymptom = (item) => {
       setSymptom(prev =>
