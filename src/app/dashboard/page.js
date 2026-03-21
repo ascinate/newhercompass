@@ -8,6 +8,42 @@ import SignupModal from '../components/SignupModal';
 import LoginModal from '../components/LogiModal';
 import LoadingModal from "../components/LoadingModal";
 
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend
+} from "chart.js";
+
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend
+);
+
+const graphData = {
+  labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+  datasets: [
+    {
+      label: "Energy",
+      data: insights?.correlationInsight?.energy_trend || [2, 3, 3, 4, 2, 3, 4],
+      tension: 0.4
+    },
+    {
+      label: "Sleep",
+      data: insights?.correlationInsight?.sleep_trend || [3, 2, 4, 3, 3, 4, 5],
+      tension: 0.4
+    }
+  ]
+};
+
 import axios from "axios";
 
 export default function Dashboard() {
@@ -390,30 +426,18 @@ export default function Dashboard() {
                         </div>
 
                      </div>
+
+
+
                      <div className="col-lg-6">
                         <div className="card w-100">
                            <div className="card-body py-0">
                               <div className="row">
                                  <div className="col-lg-8">
                                     <h4 className="card-title">Nutrition & Recipes</h4>
-
-
-                                    {radarImages?.length > 0 && (
-                                         <div className="d-flex gap-2 mb-3 overflow-auto">
-                                           {radarImages.map((img, i) => (
-                                             <Image
-                                               key={i}
-                                               src={img}
-                                               width={200}
-                                               height={120}
-                                               alt="Graph"
-                                               className="rounded"
-                                               unoptimized
-                                             />
-                                           ))}
-                                         </div>
-                                       )}
-                                 
+                                    <div className="mb-3">
+                                    <Line data={graphData} />
+                                    </div>
                                     <p className="mt-2">
                                        {nutrition?.summary ||
                                           "Mood-based recipes and nutrition radar aligned with WHO/NIH guidance."}
